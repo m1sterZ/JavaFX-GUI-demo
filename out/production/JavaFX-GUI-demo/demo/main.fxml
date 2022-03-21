@@ -15,7 +15,16 @@
          <children>
             <Button fx:id="readbt" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#readFile" text="read" />
             <ComboBox fx:id="netcb" layoutX="14.0" layoutY="55.0" onAction="#selectNet" prefWidth="150.0" promptText="net" />
-            <ComboBox fx:id="activatorcb" layoutX="14.0" layoutY="89.0" onAction="#selectActivator" prefWidth="150.0" promptText="activator" />
+            <ComboBox fx:id="activatorcb" layoutX="14.0" layoutY="89.0" onAction="#selectActivator" prefWidth="150.0" promptText="activator">
+               <items>
+                  <FXCollections fx:factory="observableArrayList">
+                     <String fx:value="relu" />
+                     <String fx:value="Sigmoid" />
+                     <String fx:value="Tanh" />
+                     <String fx:value="softplus" />
+                  </FXCollections>
+               </items>
+            </ComboBox>
             <ComboBox fx:id="opcb" layoutX="14.0" layoutY="124.0" onAction="#selectOp" prefWidth="150.0" promptText="optimizer">
                <items>
                   <FXCollections fx:factory="observableArrayList">

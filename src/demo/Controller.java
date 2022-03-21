@@ -12,7 +12,7 @@ import java.io.File;
 
 public class Controller {
     private Stage stage;
-    private FileChooser fileChooser;
+    public FileChooser fileChooser;
     private Wrapper wrapper;
     @FXML
     public AnchorPane ap;
@@ -67,35 +67,120 @@ public class Controller {
     }
 
     @FXML
+    public void selectActivator() {
+        String activator = activatorcb.getValue();
+        wrapper.setActivator(activator);
+    }
+//relu
+//sigmoid
+//tanh
+//softplus
+
+
+    @FXML
     public void selectOp() {
         String op = opcb.getValue();
+        opPane.setVisible(true);
         opText1.setText("lr:");
+        opText1.setVisible(true);
+        opParam1.setVisible(true);
+        opText2.setVisible(true);
+        opParam2.setVisible(true);
+        opText3.setVisible(true);
+        opParam3.setVisible(true);
         switch (op) {
-            case "1":
-                opText2.setText("param:");
-                opText3.setText("param:");
-                opText4.setText("param:");
-                opText5.setText("param:");
-                opText6.setText("param:");
+            case "SGD":
+                opText2.setText("momentum:");
+                opText3.setText("dampening:");
+                opText4.setText("weight_decay:");
+                opText4.setVisible(true);
+                opParam4.setVisible(true);
+                opText5.setText("nesterov:");
+                opText5.setVisible(true);
+                opParam5.setVisible(true);
+                opText6.setVisible(false);
+                opParam6.setVisible(false);
                 break;
-            case "2":
+            case "ASGD":
+                opText2.setText("lambd:");
+                opText3.setText("alpha:");
+                opText4.setText("t0:");
+                opText4.setVisible(true);
+                opParam4.setVisible(true);
+                opText5.setText("weight_decay:");
+                opText5.setVisible(true);
+                opParam5.setVisible(true);
+                opText6.setVisible(false);
+                opParam6.setVisible(false);
+                break;
+            case "Adam":
+            case "Adamax":
+                opText2.setText("betas:");
+                opText3.setText("eps:");
+                opText4.setText("weight_decay:");
+                opText4.setVisible(true);
+                opParam4.setVisible(true);
                 opText5.setVisible(false);
                 opParam5.setVisible(false);
                 opText6.setVisible(false);
                 opParam6.setVisible(false);
                 break;
+            case "Adadelta":
+                opText2.setText("rho:");
+                opText3.setText("eps:");
+                opText4.setText("weight_decay:");
+                opText4.setVisible(true);
+                opParam4.setVisible(true);
+                opText5.setVisible(false);
+                opParam5.setVisible(false);
+                opText6.setVisible(false);
+                opParam6.setVisible(false);
+                break;
+            case "Adagrad":
+                opText2.setText("lr_decay:");
+                opText3.setText("weight_decay:");
+                opText4.setVisible(false);
+                opParam4.setVisible(false);
+                opText5.setVisible(false);
+                opParam5.setVisible(false);
+                opText6.setVisible(false);
+                opParam6.setVisible(false);
+                break;
+            case "Rprop":
+                opText2.setText("etas:");
+                opText3.setText("step_sizes:");
+                opText4.setVisible(false);
+                opParam4.setVisible(false);
+                opText5.setVisible(false);
+                opParam5.setVisible(false);
+                opText6.setVisible(false);
+                opParam6.setVisible(false);
+                break;
+            case "RMSprop":
+                opText2.setText("alpha:");
+                opText3.setText("eps:");
+                opText4.setText("weight_decay:");
+                opText4.setVisible(true);
+                opParam4.setVisible(true);
+                opText5.setText("momentum:");
+                opText5.setVisible(true);
+                opParam5.setVisible(true);
+                opText6.setText("centered:");
+                opText6.setVisible(true);
+                opParam6.setVisible(true);
+                break;
         }
         wrapper.setOptimizer(op);
     }
 
-    //SGD
-    //ASGD
-    //Adam
-    //Adamax
-    //Adadelta
-    //Adagrad
-    //Rprop
-    //RMSprop
+//# optim.SGD(params, lr=, momentum=0, dampening=0, weight_decay=0, nesterov=False) 5
+//# optim.ASGD(params, lr=0.01, lambd=0.0001, alpha=0.75, t0=1000000.0, weight_decay=0) 5
+//# optim.Rprop(params, lr=0.01, etas=(0.5, 1.2), step_sizes=(1e-06, 50)) 3
+//# optim.Adagrad(params, lr=0.01, lr_decay=0, weight_decay=0) 3
+//# optim.Adadelta(params, lr=1.0, rho=0.9, eps=1e-06, weight_decay=0) 4
+//# optim.RMSprop(params, lr=0.01, alpha=0.99, eps=1e-08, weight_decay=0, momentum=0, centered=False) 6
+//# optim.Adam(params, lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0) 5
+//# optim.Adamax(params, lr=0.002, betas=(0.9, 0.999), eps=1e-08, weight_decay=0) 4
 
     @FXML
     public void selectLoss() {
@@ -187,12 +272,6 @@ public class Controller {
 //torch.nn.MSELoss()
 //torch.nn.SmoothL1Loss(size_average=None, reduce=None, reduction='mean')
 
-
-    @FXML
-    public void selectActivator() {
-        String activator = activatorcb.getValue();
-        wrapper.setActivator(activator);
-    }
 
     @FXML
     public void saveAll() {
