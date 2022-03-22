@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.ScrollPane?>
@@ -7,8 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
+
 <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="606.0" prefWidth="672.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="demo.Controller">
   <content>
     <AnchorPane fx:id="ap" minHeight="0.0" minWidth="0.0" prefHeight="733.0" prefWidth="653.0">
@@ -54,108 +55,108 @@
             </ComboBox>
             <AnchorPane fx:id="opPane" layoutX="11.0" layoutY="161.0" prefHeight="110.0" prefWidth="630.0">
                <children>
-                  <Text fx:id="opText1" layoutX="17.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="90.0">
+                  <Text fx:id="opText1" layoutX="6.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="weight_decay:" wrappingWidth="110.0">
                      <font>
-                        <Font name="System Italic" size="17.0" />
+                        <Font name="Consolas" size="15.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="opParam1" layoutX="107.0" layoutY="10.0" />
-                  <Text fx:id="opText2" layoutX="316.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="90.0">
+                  <TextField fx:id="opParam1" layoutX="116.0" layoutY="11.0" />
+                  <Text fx:id="opText2" layoutX="308.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="110.0">
                      <font>
-                        <Font name="System Italic" size="17.0" />
+                        <Font name="Consolas" size="15.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="opParam2" layoutX="406.0" layoutY="10.0" />
-                  <Text fx:id="opText3" layoutX="16.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="90.0">
+                  <TextField fx:id="opParam2" layoutX="425.0" layoutY="11.0" />
+                  <Text fx:id="opText3" layoutX="6.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="110.0">
                      <font>
-                        <Font name="System Italic" size="17.0" />
+                        <Font name="Consolas" size="15.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="opParam3" layoutX="107.0" layoutY="41.0" />
-                  <Text fx:id="opText5" layoutX="14.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="90.0">
+                  <TextField fx:id="opParam3" layoutX="116.0" layoutY="42.0" />
+                  <Text fx:id="opText5" layoutX="6.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="110.0">
                      <font>
-                        <Font name="System Italic" size="17.0" />
+                        <Font name="Consolas" size="15.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="opParam5" layoutX="107.0" layoutY="70.0" />
-                  <Text fx:id="opText4" layoutX="316.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="90.0">
+                  <TextField fx:id="opParam5" layoutX="116.0" layoutY="71.0" />
+                  <Text fx:id="opText4" layoutX="308.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="110.0">
                      <font>
-                        <Font name="System Italic" size="17.0" />
+                        <Font name="Consolas" size="15.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="opParam4" layoutX="406.0" layoutY="42.0" />
-                  <Text fx:id="opText6" layoutX="316.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="90.0">
+                  <TextField fx:id="opParam4" layoutX="425.0" layoutY="42.0" />
+                  <Text fx:id="opText6" layoutX="308.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="110.0">
                      <font>
-                        <Font name="System Italic" size="17.0" />
+                        <Font name="Consolas" size="15.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="opParam6" layoutX="406.0" layoutY="70.0" />
+                  <TextField fx:id="opParam6" layoutX="425.0" layoutY="71.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="lossPane" layoutX="14.0" layoutY="313.0" prefHeight="110.0" prefWidth="630.0">
                <children>
-                  <Text fx:id="lossText1" layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="90.0">
+                  <Text fx:id="lossText1" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="size_average:" wrappingWidth="110.0">
                      <font>
-                        <Font name="System Italic" size="17.0" />
+                        <Font name="Consolas" size="15.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="lossParam1" layoutX="103.0" layoutY="8.0" />
-                  <Text fx:id="lossText2" layoutX="315.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="90.0">
+                  <TextField fx:id="lossParam1" layoutX="110.0" layoutY="8.0" />
+                  <Text fx:id="lossText2" layoutX="315.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="110.0">
                      <font>
-                        <Font name="System Italic" size="17.0" />
+                        <Font name="Consolas" size="15.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="lossParam2" layoutX="405.0" layoutY="8.0" />
-                  <Text fx:id="lossText3" layoutX="14.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="90.0">
+                  <TextField fx:id="lossParam2" layoutX="422.0" layoutY="8.0" />
+                  <Text fx:id="lossText3" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="110.0">
                      <font>
-                        <Font name="System Italic" size="17.0" />
+                        <Font name="Consolas" size="15.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="lossParam3" layoutX="103.0" layoutY="42.0" />
-                  <Text fx:id="lossText4" layoutX="315.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="90.0">
+                  <TextField fx:id="lossParam3" layoutX="110.0" layoutY="42.0" />
+                  <Text fx:id="lossText4" layoutX="315.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="110.0">
                      <font>
-                        <Font name="System Italic" size="17.0" />
+                        <Font name="Consolas" size="15.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="lossParam4" layoutX="405.0" layoutY="42.0" />
-                  <Text fx:id="lossText5" layoutX="14.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="90.0">
+                  <TextField fx:id="lossParam4" layoutX="422.0" layoutY="42.0" />
+                  <Text fx:id="lossText5" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="110.0">
                      <font>
-                        <Font name="System Italic" size="17.0" />
+                        <Font name="Consolas" size="15.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="lossParam5" layoutX="103.0" layoutY="76.0" />
+                  <TextField fx:id="lossParam5" layoutX="110.0" layoutY="77.0" />
                </children>
             </AnchorPane>
             <AnchorPane fx:id="levelPane" layoutX="14.0" layoutY="423.0" prefHeight="110.0" prefWidth="630.0">
                <children>
-                  <Text layoutX="14.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="level:" wrappingWidth="47.0791015625">
+                  <Text layoutX="14.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="level:" wrappingWidth="60.0">
                      <font>
-                        <Font name="System Italic" size="17.0" />
+                        <Font name="Consolas" size="15.0" />
                      </font>
                   </Text>
                   <TextField fx:id="levelField" layoutX="101.0" layoutY="10.0" />
-                  <Text layoutX="315.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="epoch:" wrappingWidth="50.0791015625">
+                  <Text layoutX="315.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="epoch:" wrappingWidth="60.0">
                      <font>
-                        <Font name="System Italic" size="17.0" />
+                        <Font name="Consolas" size="15.0" />
                      </font>
                   </Text>
                   <TextField fx:id="epochField" layoutX="387.0" layoutY="10.0" />
-                  <Text layoutX="14.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="input dimension:" wrappingWidth="131.0791015625">
+                  <Text layoutX="14.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="input dimension:" wrappingWidth="140.0">
                      <font>
-                        <Font name="System Italic" size="17.0" />
+                        <Font name="Consolas" size="15.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="inDiField" layoutX="153.0" layoutY="42.0" prefHeight="27.0" prefWidth="275.0" />
+                  <TextField fx:id="inDiField" layoutX="165.0" layoutY="42.0" prefHeight="27.0" prefWidth="275.0" />
                   <Text layoutX="14.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="output dimension:" wrappingWidth="141.0791015625">
                      <font>
-                        <Font name="System Italic" size="17.0" />
+                        <Font name="Consolas" size="15.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="outDiField" layoutX="153.0" layoutY="72.0" prefHeight="27.0" prefWidth="275.0" />
+                  <TextField fx:id="outDiField" layoutX="165.0" layoutY="74.0" prefHeight="27.0" prefWidth="275.0" />
                </children>
             </AnchorPane>
-            <Button fx:id="saveSetting" layoutX="14.0" layoutY="533.0" mnemonicParsing="false" onAction="#saveAll" text="save settings" />
-            <Button fx:id="generate" layoutX="145.0" layoutY="533.0" mnemonicParsing="false" onAction="#generateCode" text="generate model" />
+            <Button fx:id="saveSetting" layoutX="14.0" layoutY="545.0" mnemonicParsing="false" onAction="#saveAll" text="save settings" />
+            <Button fx:id="generate" layoutX="144.0" layoutY="545.0" mnemonicParsing="false" onAction="#generateCode" text="generate model" />
          </children></AnchorPane>
   </content>
 </ScrollPane>

@@ -20,6 +20,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../JavaFX-TextEditor-master" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
@@ -59,11 +60,34 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1647868132999</updated>
-      <workItem from="1647868136463" duration="478000" />
+      <workItem from="1647868136463" duration="900000" />
+      <workItem from="1647910684132" duration="12984000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="2" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1647934296876">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1647934296876" />
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1647950558956">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1647950558956" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1647950558956">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1647950558956" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1647950558956">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1647950558956" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1647950558956">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1647950558956" />
   </component>
 </project>
