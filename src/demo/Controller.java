@@ -1,5 +1,6 @@
 package demo;
 
+import com.sun.xml.internal.ws.util.StringUtils;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -8,11 +9,15 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
+import java.text.NumberFormat;
+import java.util.*;
 
 public class Controller {
     private Stage stage;
     public FileChooser fileChooser = new FileChooser();
     private Wrapper wrapper;
+    private Map<String, Integer> opMap = new HashMap<>();
+    private Map<String, Integer> lossMap = new HashMap<>();
     @FXML
     public AnchorPane ap;
     public Button readbt;
@@ -330,13 +335,13 @@ public class Controller {
         wrapper.setLossFunc(loss);
         levelPane.setVisible(true);
     }
-//torch.nn.BCELoss(weight=None, size_average=True, reduce=True, reduction='mean')
-//torch.nn.BCEWithLogitsLoss(weight=None, size_average=True, reduce=True, reduction='mean', pos_weight=None)
-//torch.nn.NLLLoss(weight=None, size_average=None, reduce=None, reduction='mean')
-//torch.nn.CrossEntropyLoss(weight=None, size_average=True)
-//torch.nn.L1Loss(size_average=True, reduce=True, reduction='mean')
-//torch.nn.MSELoss(size_average=True, reduce=True, reduction='mean')
-//torch.nn.SmoothL1Loss(size_average=True, reduce=True, reduction='mean', beta=1.0)
+//torch.nn.BCELoss(weight=None, size_average=True, reduce=True, reduction='mean') 4
+//torch.nn.BCEWithLogitsLoss(weight=None, size_average=True, reduce=True, reduction='mean', pos_weight=None) 5
+//torch.nn.NLLLoss(weight=None, size_average=None, reduce=None, reduction='mean') 4
+//torch.nn.CrossEntropyLoss(weight=None, size_average=True) 2
+//torch.nn.L1Loss(size_average=True, reduce=True, reduction='mean') 3
+//torch.nn.MSELoss(size_average=True, reduce=True, reduction='mean') 3
+//torch.nn.SmoothL1Loss(size_average=True, reduce=True, reduction='mean', beta=1.0) 4
 
 
     @FXML
@@ -353,7 +358,84 @@ public class Controller {
         if (saveAlert.getResult() == ButtonType.YES) {
             //TODO: save all settings from textfields into wrapper
             disableAll();
+            saveOp();
+            saveLoss();
+            saveLevels();
             generate.setDisable(false);
+        }
+    }
+
+    public void saveOp() {
+        String op = wrapper.getOptimizer();
+        int num = opMap.get(op);
+        String[] opParams = new String[num];
+        switch (op) {
+            case "SGD":
+            case "ASGD":
+            case "Rprop":
+            case "Adagrad":
+            case "Adadelta":
+            case "Adam":
+            case "Adamax":
+            case "RMSprop":
+        }
+        wrapper.setOpParams(opParams);
+    }
+
+    public void saveLoss() {
+        String loss = wrapper.getLossFunc();
+        int num = lossMap.get(loss);
+        String[] lossParams = new String[num];
+        switch (loss) {
+            case "BCELoss":
+            case "NLLLoss":
+            case "BCEWithLogitsLoss":
+            case "L1Loss":
+            case "MSELoss":
+            case "CrossEntropyLoss":
+            case "SmoothL1Loss":
+        }
+        wrapper.setLossParams(lossParams);
+    }
+
+    public void saveLevels() {
+        String levelstr = levelField.getText();
+        String epochstr = epochField.getText();
+        int l = isInt(levelstr,"level");
+        int e = isInt(epochstr, "epoch");
+        if (l > 0) wrapper.setLevel(l);
+        if (e > 0) wrapper.setEpoch(e);
+        String[] inDimensions = inDiField.getText().split(",");
+        String[] outDimensions = outDiField.getText().split(",");
+        List<Integer> list = new ArrayList<>();
+        for (String s : inDimensions) {
+            int res = isInt(s, "in_dimension");
+            //TODO handle invalid input
+            if (res > Integer.MIN_VALUE) list.add(res);
+        }
+        int[] tmpArray = new int[l];
+        //
+        list.clear();
+        for (String s : outDimensions) {
+            int res = isInt(s, "out_dimensions");
+            if (res > Integer.MIN_VALUE) list.add(res);
+        }
+        //
+    }
+
+    private int isInt(String str, String paraName) {
+        try {
+            int res = Integer.parseInt(str);
+            return res;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(
+                    Alert.AlertType.ERROR,
+                     paraName + " must be Integer",
+                    ButtonType.OK
+            );
+            alert.showAndWait();
+            return Integer.MIN_VALUE;
         }
     }
 
@@ -388,6 +470,25 @@ public class Controller {
 
     public void init(Stage primaryStage) {
         this.wrapper = new Wrapper();
+
+        opMap.put("SGD", 5);
+        opMap.put("ASGD", 5);
+        opMap.put("Rprop", 3);
+        opMap.put("Adagrad", 3);
+        opMap.put("Adadelta", 4);
+        opMap.put("RMSprop", 6);
+        opMap.put("Adam", 5);
+        opMap.put("Adamax", 4);
+
+        lossMap.put("BCELoss", 4);
+        lossMap.put("BCEWithLogitsLoss", 5);
+        lossMap.put("NLLLoss", 4);
+        lossMap.put("CrossEntropyLoss", 2);
+        lossMap.put("L1Loss", 3);
+        lossMap.put("MSELoss", 3);
+        lossMap.put("SmoothL1Loss", 4);
+
+
         opPane.setVisible(false);
         lossPane.setVisible(false);
         levelPane.setVisible(false);
