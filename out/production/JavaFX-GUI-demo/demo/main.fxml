@@ -4,6 +4,7 @@
 <?import javafx.collections.FXCollections?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,18 +16,33 @@
     <AnchorPane fx:id="ap" minHeight="0.0" minWidth="0.0" prefHeight="733.0" prefWidth="653.0">
          <children>
             <Button fx:id="readbt" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#readFile" text="read" />
-            <ComboBox fx:id="netcb" layoutX="14.0" layoutY="55.0" onAction="#selectNet" prefWidth="150.0" promptText="net" />
-            <ComboBox fx:id="activatorcb" layoutX="14.0" layoutY="89.0" onAction="#selectActivator" prefWidth="150.0" promptText="activator">
+            <ComboBox fx:id="netcb" layoutX="14.0" layoutY="47.0" onAction="#selectNet" prefWidth="150.0" promptText="net">
                <items>
                   <FXCollections fx:factory="observableArrayList">
-                     <String fx:value="relu" />
-                     <String fx:value="Sigmoid" />
-                     <String fx:value="Tanh" />
-                     <String fx:value="softplus" />
+                     <String fx:value="BPNN" />
+                     <String fx:value="RNN" />
+                     <String fx:value="LSTM" />
                   </FXCollections>
                </items>
             </ComboBox>
-            <ComboBox fx:id="opcb" layoutX="14.0" layoutY="124.0" onAction="#selectOp" prefWidth="150.0" promptText="optimizer">
+            <AnchorPane fx:id="activatorPane" layoutX="15.0" layoutY="78.0" prefHeight="99.0" prefWidth="630.0">
+               <children>
+                  <ComboBox fx:id="actcb1" layoutY="26.0" prefHeight="23.0" prefWidth="120.0" promptText="level 1" />
+                  <ComboBox fx:id="actcb2" layoutX="151.0" layoutY="26.0" prefHeight="23.0" prefWidth="120.0" promptText="level 2" />
+                  <ComboBox fx:id="actcb3" layoutX="303.0" layoutY="26.0" prefHeight="23.0" prefWidth="120.0" promptText="level 3" />
+                  <ComboBox fx:id="actcb4" layoutX="459.0" layoutY="26.0" prefHeight="23.0" prefWidth="120.0" promptText="level 4" />
+                  <ComboBox fx:id="actcb5" layoutY="62.0" prefHeight="23.0" prefWidth="120.0" promptText="level 5" />
+                  <ComboBox fx:id="actcb6" layoutX="151.0" layoutY="62.0" prefHeight="23.0" prefWidth="120.0" promptText="level 6" />
+                  <ComboBox fx:id="actcb7" layoutX="303.0" layoutY="62.0" prefHeight="23.0" prefWidth="120.0" promptText="level 7" />
+                  <ComboBox fx:id="actcb8" layoutX="459.0" layoutY="62.0" prefHeight="23.0" prefWidth="120.0" promptText="level 8" />
+                  <Label text="Activators:">
+                     <font>
+                        <Font name="Consolas" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <ComboBox fx:id="opcb" layoutX="14.0" layoutY="177.0" onAction="#selectOp" prefWidth="150.0" promptText="optimizer">
                <items>
                   <FXCollections fx:factory="observableArrayList">
                      <String fx:value="SGD" />
@@ -40,20 +56,7 @@
                   </FXCollections>
                </items>
             </ComboBox>
-            <ComboBox fx:id="losscb" layoutX="14.0" layoutY="278.0" onAction="#selectLoss" prefWidth="150.0" promptText="loss function">
-               <items>
-                  <FXCollections fx:factory="observableArrayList">
-                     <String fx:value="BCELoss" />
-                     <String fx:value="BCEWithLogitsLoss" />
-                     <String fx:value="NLLLoss" />
-                     <String fx:value="CrossEntropyLoss" />
-                     <String fx:value="L1Loss" />
-                     <String fx:value="MSELoss" />
-                     <String fx:value="SmoothL1Loss" />
-                  </FXCollections>
-               </items>
-            </ComboBox>
-            <AnchorPane fx:id="opPane" layoutX="11.0" layoutY="161.0" prefHeight="110.0" prefWidth="630.0">
+            <AnchorPane fx:id="opPane" layoutX="12.0" layoutY="200.0" prefHeight="110.0" prefWidth="630.0">
                <children>
                   <Text fx:id="opText1" layoutX="6.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="weight_decay:" wrappingWidth="110.0">
                      <font>
@@ -93,7 +96,20 @@
                   <TextField fx:id="opParam6" layoutX="425.0" layoutY="71.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="lossPane" layoutX="14.0" layoutY="313.0" prefHeight="110.0" prefWidth="630.0">
+            <ComboBox fx:id="losscb" layoutX="14.0" layoutY="310.0" onAction="#selectLoss" prefWidth="150.0" promptText="loss function">
+               <items>
+                  <FXCollections fx:factory="observableArrayList">
+                     <String fx:value="BCELoss" />
+                     <String fx:value="BCEWithLogitsLoss" />
+                     <String fx:value="NLLLoss" />
+                     <String fx:value="CrossEntropyLoss" />
+                     <String fx:value="L1Loss" />
+                     <String fx:value="MSELoss" />
+                     <String fx:value="SmoothL1Loss" />
+                  </FXCollections>
+               </items>
+            </ComboBox>
+            <AnchorPane fx:id="lossPane" layoutX="15.0" layoutY="333.0" prefHeight="110.0" prefWidth="630.0">
                <children>
                   <Text fx:id="lossText1" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="size_average:" wrappingWidth="110.0">
                      <font>
@@ -127,36 +143,36 @@
                   <TextField fx:id="lossParam5" layoutX="110.0" layoutY="77.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="levelPane" layoutX="14.0" layoutY="423.0" prefHeight="110.0" prefWidth="630.0">
+            <AnchorPane fx:id="levelPane" layoutX="15.0" layoutY="435.0" prefHeight="110.0" prefWidth="630.0">
                <children>
-                  <Text layoutX="14.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="level:" wrappingWidth="60.0">
+                  <Text layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="epoch:" wrappingWidth="60.0">
                      <font>
                         <Font name="Consolas" size="15.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="levelField" layoutX="101.0" layoutY="10.0" />
-                  <Text layoutX="315.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="epoch:" wrappingWidth="60.0">
+                  <TextField fx:id="epochField" layoutX="60.0" layoutY="10.0" />
+                  <Text layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="input dimension:" wrappingWidth="140.0">
                      <font>
                         <Font name="Consolas" size="15.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="epochField" layoutX="387.0" layoutY="10.0" />
-                  <Text layoutX="14.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="input dimension:" wrappingWidth="140.0">
+                  <TextField fx:id="inDiField" layoutX="141.0" layoutY="42.0" prefHeight="27.0" prefWidth="275.0" />
+                  <Text layoutX="-1.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="output dimension:" wrappingWidth="141.0791015625">
                      <font>
                         <Font name="Consolas" size="15.0" />
                      </font>
                   </Text>
-                  <TextField fx:id="inDiField" layoutX="165.0" layoutY="42.0" prefHeight="27.0" prefWidth="275.0" />
-                  <Text layoutX="14.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="output dimension:" wrappingWidth="141.0791015625">
-                     <font>
-                        <Font name="Consolas" size="15.0" />
-                     </font>
-                  </Text>
-                  <TextField fx:id="outDiField" layoutX="165.0" layoutY="74.0" prefHeight="27.0" prefWidth="275.0" />
+                  <TextField fx:id="outDiField" layoutX="141.0" layoutY="75.0" prefHeight="27.0" prefWidth="275.0" />
                </children>
             </AnchorPane>
             <Button fx:id="saveSetting" layoutX="14.0" layoutY="545.0" mnemonicParsing="false" onAction="#saveAll" text="save settings" />
             <Button fx:id="generate" layoutX="144.0" layoutY="545.0" mnemonicParsing="false" onAction="#generateCode" text="generate model" />
+            <Text layoutX="198.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="level:" wrappingWidth="60.0">
+               <font>
+                  <Font name="Consolas" size="15.0" />
+               </font>
+            </Text>
+            <TextField fx:id="levelField" layoutX="250.0" layoutY="47.0" />
          </children></AnchorPane>
   </content>
 </ScrollPane>

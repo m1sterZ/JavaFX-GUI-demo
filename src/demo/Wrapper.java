@@ -91,4 +91,14 @@ public class Wrapper {
     public void setOutDi(int[] outDi) {
         this.outDi = outDi;
     }
+
+    public String toText() {
+        StringBuilder builder = new StringBuilder("");
+        builder.append("#" + this.getNetName() + "\n");
+        builder.append("#" + this.getActivator() + "\n");
+        builder.append("#" + this.getOptimizer() + "\n");
+        //TODO
+
+        return builder.toString();
+    }
 }

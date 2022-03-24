@@ -22,7 +22,16 @@ public class Controller {
     public AnchorPane ap;
     public Button readbt;
     public ComboBox<String> netcb;
+    public AnchorPane activatorPane;
     public ComboBox<String> activatorcb;
+    public ComboBox<String> actcb1;
+    public ComboBox<String> actcb2;
+    public ComboBox<String> actcb3;
+    public ComboBox<String> actcb4;
+    public ComboBox<String> actcb5;
+    public ComboBox<String> actcb6;
+    public ComboBox<String> actcb7;
+    public ComboBox<String> actcb8;
     public ComboBox<String> opcb;
     public AnchorPane opPane;
     public Text opText1;
@@ -72,6 +81,7 @@ public class Controller {
 
     @FXML
     public void selectActivator() {
+        //TODO
         String activator = activatorcb.getValue();
         wrapper.setActivator(activator);
     }
@@ -356,49 +366,92 @@ public class Controller {
         saveAlert.setTitle("Confirm");
         saveAlert.showAndWait();
         if (saveAlert.getResult() == ButtonType.YES) {
-            //TODO: save all settings from textfields into wrapper
+            //
             disableAll();
+            saveFirst();
             saveOp();
             saveLoss();
-            saveLevels();
+            saveLast();
             generate.setDisable(false);
         }
+    }
+
+    public void saveFirst() {
+        //TODO save net name
+        String netName = netcb.getValue();
+        wrapper.setNetName(netName);
+        String activator = activatorcb.getValue();
+        wrapper.setActivator(activator);
+//        System.out.println(netName);
+//        System.out.println(activator);
     }
 
     public void saveOp() {
         String op = wrapper.getOptimizer();
         int num = opMap.get(op);
         String[] opParams = new String[num];
+        opParams[0] = opParam1.getText();
+        opParams[1] = opParam2.getText();
+        opParams[2] = opParam3.getText();
         switch (op) {
             case "SGD":
             case "ASGD":
+            case "Adam":
+                opParams[3] = opParam4.getText();
+                opParams[4] = opParam5.getText();
+                break;
+            case "Adadelta":
+            case "Adamax":
+                opParams[3] = opParam4.getText();
+                break;
+            case "RMSprop":
+                opParams[3] = opParam4.getText();
+                opParams[4] = opParam5.getText();
+                opParams[5] = opParam5.getText();
+                break;
             case "Rprop":
             case "Adagrad":
-            case "Adadelta":
-            case "Adam":
-            case "Adamax":
-            case "RMSprop":
+                break;
         }
         wrapper.setOpParams(opParams);
+//        System.out.println(op);
+//        for (String s : opParams)
+//            System.out.println(s);
     }
 
     public void saveLoss() {
         String loss = wrapper.getLossFunc();
         int num = lossMap.get(loss);
         String[] lossParams = new String[num];
+        lossParams[0] = lossParam1.getText();
+        lossParams[1] = lossParam2.getText();
         switch (loss) {
             case "BCELoss":
             case "NLLLoss":
+            case "SmoothL1Loss":
+                lossParams[2] = lossParam3.getText();
+                lossParams[3] = lossParam4.getText();
+                break;
             case "BCEWithLogitsLoss":
+                lossParams[2] = lossParam3.getText();
+                lossParams[3] = lossParam4.getText();
+                lossParams[4] = lossParam5.getText();
+                break;
             case "L1Loss":
             case "MSELoss":
+                lossParams[2] = lossParam3.getText();
+                break;
             case "CrossEntropyLoss":
-            case "SmoothL1Loss":
+                break;
+
         }
         wrapper.setLossParams(lossParams);
+//        System.out.println(loss);
+//        for (String s : lossParams)
+//            System.out.println(s);
     }
 
-    public void saveLevels() {
+    public void saveLast() {
         String levelstr = levelField.getText();
         String epochstr = epochField.getText();
         int l = isInt(levelstr,"level");
@@ -413,13 +466,19 @@ public class Controller {
             //TODO handle invalid input
             if (res > Integer.MIN_VALUE) list.add(res);
         }
-        int[] tmpArray = new int[l];
+        int[] tmpArray = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) tmpArray[i] = list.get(i);
+        wrapper.setInDi(tmpArray);
+//        for (int i : tmpArray) System.out.println(i);
         //
         list.clear();
         for (String s : outDimensions) {
             int res = isInt(s, "out_dimensions");
             if (res > Integer.MIN_VALUE) list.add(res);
         }
+        for (int i = 0; i < list.size(); i++) tmpArray[i] = list.get(i);
+        wrapper.setOutDi(tmpArray);
+//        for (int i : tmpArray) System.out.println(i);
         //
     }
 
@@ -452,8 +511,7 @@ public class Controller {
 
     @FXML
     public void generateCode() {
-        // TODO: check if model file exists
-        //  alert and generate model
+
         Alert genAlert = new Alert(
                 Alert.AlertType.CONFIRMATION,
                 "Continue to generate model?",
@@ -466,6 +524,10 @@ public class Controller {
         if (genAlert.getResult() == ButtonType.YES) {
 //            Platform.exit();
         }
+    }
+
+    private void mkFile() {
+        //TODO
     }
 
     public void init(Stage primaryStage) {
