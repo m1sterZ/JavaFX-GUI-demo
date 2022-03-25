@@ -22,8 +22,8 @@ public class Controller {
     public AnchorPane ap;
     public Button readbt;
     public ComboBox<String> netcb;
+    public ComboBox<String> levelcb;
     public AnchorPane activatorPane;
-    public ComboBox<String> activatorcb;
     public ComboBox<String> actcb1;
     public ComboBox<String> actcb2;
     public ComboBox<String> actcb3;
@@ -58,8 +58,7 @@ public class Controller {
     public TextField lossParam3;
     public TextField lossParam4;
     public TextField lossParam5;
-    public AnchorPane levelPane;
-    public TextField levelField;
+    public AnchorPane lastPane;
     public TextField epochField;
     public TextField inDiField;
     public TextField outDiField;
@@ -80,10 +79,92 @@ public class Controller {
     }
 
     @FXML
-    public void selectActivator() {
-        //TODO
-        String activator = activatorcb.getValue();
-        wrapper.setActivator(activator);
+    public void selectLevel() {
+        String levelstr = levelcb.getValue();
+        int level = Integer.parseInt(levelstr);
+        wrapper.setLevel(level);
+        activatorPane.setVisible(true);
+        switch (level) {
+            case 1:
+                actcb1.setVisible(true);
+                actcb2.setVisible(false);
+                actcb3.setVisible(false);
+                actcb4.setVisible(false);
+                actcb5.setVisible(false);
+                actcb6.setVisible(false);
+                actcb7.setVisible(false);
+                actcb8.setVisible(false);
+                break;
+            case 2:
+                actcb1.setVisible(true);
+                actcb2.setVisible(true);
+                actcb3.setVisible(false);
+                actcb4.setVisible(false);
+                actcb5.setVisible(false);
+                actcb6.setVisible(false);
+                actcb7.setVisible(false);
+                actcb8.setVisible(false);
+                break;
+            case 3:
+                actcb1.setVisible(true);
+                actcb2.setVisible(true);
+                actcb3.setVisible(true);
+                actcb4.setVisible(false);
+                actcb5.setVisible(false);
+                actcb6.setVisible(false);
+                actcb7.setVisible(false);
+                actcb8.setVisible(false);
+                break;
+            case 4:
+                actcb1.setVisible(true);
+                actcb2.setVisible(true);
+                actcb3.setVisible(true);
+                actcb4.setVisible(true);
+                actcb5.setVisible(false);
+                actcb6.setVisible(false);
+                actcb7.setVisible(false);
+                actcb8.setVisible(false);
+                break;
+            case 5:
+                actcb1.setVisible(true);
+                actcb2.setVisible(true);
+                actcb3.setVisible(true);
+                actcb4.setVisible(true);
+                actcb5.setVisible(true);
+                actcb6.setVisible(false);
+                actcb7.setVisible(false);
+                actcb8.setVisible(false);
+                break;
+            case 6:
+                actcb1.setVisible(true);
+                actcb2.setVisible(true);
+                actcb3.setVisible(true);
+                actcb4.setVisible(true);
+                actcb5.setVisible(true);
+                actcb6.setVisible(true);
+                actcb7.setVisible(false);
+                actcb8.setVisible(false);
+                break;
+            case 7:
+                actcb1.setVisible(true);
+                actcb2.setVisible(true);
+                actcb3.setVisible(true);
+                actcb4.setVisible(true);
+                actcb5.setVisible(true);
+                actcb6.setVisible(true);
+                actcb7.setVisible(true);
+                actcb8.setVisible(false);
+                break;
+            case 8:
+                actcb1.setVisible(true);
+                actcb2.setVisible(true);
+                actcb3.setVisible(true);
+                actcb4.setVisible(true);
+                actcb5.setVisible(true);
+                actcb6.setVisible(true);
+                actcb7.setVisible(true);
+                actcb8.setVisible(true);
+        }
     }
 //relu
 //sigmoid
@@ -343,7 +424,7 @@ public class Controller {
                 break;
         }
         wrapper.setLossFunc(loss);
-        levelPane.setVisible(true);
+        lastPane.setVisible(true);
     }
 //torch.nn.BCELoss(weight=None, size_average=True, reduce=True, reduction='mean') 4
 //torch.nn.BCEWithLogitsLoss(weight=None, size_average=True, reduce=True, reduction='mean', pos_weight=None) 5
@@ -368,7 +449,8 @@ public class Controller {
         if (saveAlert.getResult() == ButtonType.YES) {
             //
             disableAll();
-            saveFirst();
+//            saveFirst();
+            saveActivators();
             saveOp();
             saveLoss();
             saveLast();
@@ -376,15 +458,23 @@ public class Controller {
         }
     }
 
-    public void saveFirst() {
-        //TODO save net name
-        String netName = netcb.getValue();
-        wrapper.setNetName(netName);
-        String activator = activatorcb.getValue();
-        wrapper.setActivator(activator);
-//        System.out.println(netName);
-//        System.out.println(activator);
+    private void saveActivators() {
+        int num = wrapper.getLevel();
+        String[] activators = new String[num];
+        List<String> list = new ArrayList<>();
+        list.add(actcb1.getValue());
+        list.add(actcb2.getValue());
+        list.add(actcb3.getValue());
+        list.add(actcb4.getValue());
+        list.add(actcb5.getValue());
+        list.add(actcb6.getValue());
+        list.add(actcb7.getValue());
+        list.add(actcb8.getValue());
+        for (int i = 0; i < num; i++)
+            activators[i] = list.get(i);
+        wrapper.setActivators(activators);
     }
+
 
     public void saveOp() {
         String op = wrapper.getOptimizer();
@@ -452,11 +542,8 @@ public class Controller {
     }
 
     public void saveLast() {
-        String levelstr = levelField.getText();
         String epochstr = epochField.getText();
-        int l = isInt(levelstr,"level");
         int e = isInt(epochstr, "epoch");
-        if (l > 0) wrapper.setLevel(l);
         if (e > 0) wrapper.setEpoch(e);
         String[] inDimensions = inDiField.getText().split(",");
         String[] outDimensions = outDiField.getText().split(",");
@@ -501,12 +588,12 @@ public class Controller {
     public void disableAll() {
         readbt.setDisable(true);
         netcb.setDisable(true);
-        activatorcb.setDisable(true);
+        activatorPane.setDisable(true);
         opcb.setDisable(true);
         losscb.setDisable(true);
         opPane.setDisable(true);
         lossPane.setDisable(true);
-        levelPane.setDisable(true);
+        lastPane.setDisable(true);
     }
 
     @FXML
@@ -550,10 +637,10 @@ public class Controller {
         lossMap.put("MSELoss", 3);
         lossMap.put("SmoothL1Loss", 4);
 
-
+        activatorPane.setVisible(false);
         opPane.setVisible(false);
         lossPane.setVisible(false);
-        levelPane.setVisible(false);
+        lastPane.setVisible(false);
         generate.setDisable(true);
         this.stage = primaryStage;
     }
