@@ -1,9 +1,9 @@
 #BPNN
 #3
-#ReLU Sigmoid Tanh
-#SGD(params, lr=1, momentum=0, dampening=0, weight_decay=0, neserov=False)
+#ReLU Sigmoid none
+#SGD(params, lr=0.01, momentum=0, dampening=0, weight_decay=0, neserov=False)
 #BCELoss(weight=None, size_average=True, reduce=True, reduction='mean')
-#10
+#1000
 #576 120 84
 #120 60 8
 import torch
@@ -21,14 +21,15 @@ class BPNN(nn.Module):
 	def forward(self, x): 
 		x = F.ReLU(self.fc1(x))
 		x = F.Sigmoid(self.fc2(x))
-		x = F.Tanh(self.fc3(x))
+		x = self.fc3(x)
 		return x
 
 net = BPNN()
 criterion = nn.BCELoss(weight=None, size_average=True, reduce=True, reduction='mean')
-optimizer = optim.SGD(params, lr=1, momentum=0, dampening=0, weight_decay=0, neserov=False)
-for epoch in range(10):
+optimizer = optim.SGD(params, lr=0.01, momentum=0, dampening=0, weight_decay=0, neserov=False)
+for epoch in range(1000):
 	running_loss = 0.0
+	correct = 0.0
 	for i, data in enumerate(trainloader, 0):
 		inputs, labels = data
 		optimizer.zero_grad()
@@ -37,4 +38,11 @@ for epoch in range(10):
 		loss.backward()
 		optimizer.step()
 		running_loss += loss.item()
-		# print running loss
+		predicted = torch.max(outputs.data, 1)[1]
+		correct += (predicted == labels).sum()
+# print running loss
+	if epoch % 200 == 199:
+		print('epoch:%d, loss:%.3f % (epoch + 1, running_loss / 200)')
+		print('correct:%.3f % (correct / 200)')
+		running_loss = 0.0
+		correct = 0.0

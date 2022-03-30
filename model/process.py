@@ -33,7 +33,7 @@ def generate(file_path):
     epoch = strs[5]
     in_di = strs[6].split(" ")
     out_di = strs[7].split(" ")
-    print(out_di)
+    # print(out_di)
 
     with open(file_path, "a+") as f:
         f.write("import torch\n")
@@ -52,7 +52,7 @@ def generate(file_path):
         f.write("\n\tdef forward(self, x): \n")
         for l in range(int(level)):
             n = l + 1
-            if activators[l] != "null":
+            if activators[l] != "none":
                 f.write("\t\tx = F." + activators[l] + "(self.fc" + str(n) + "(x))\n")
             else:
                 f.write("\t\tx = self.fc" + str(n) + "(x)\n")
@@ -65,6 +65,7 @@ def generate(file_path):
         f.write("optimizer = optim." + optimizer + "\n")
         f.write("for epoch in range(" + epoch + "):\n")
         f.write("\trunning_loss = 0.0\n")
+        f.write("\tcorrect = 0.0\n")
         f.write("\tfor i, data in enumerate(trainloader, 0):\n")
         f.write("\t\tinputs, labels = data\n")
         f.write("\t\toptimizer.zero_grad()\n")
@@ -73,7 +74,15 @@ def generate(file_path):
         f.write("\t\tloss.backward()\n")
         f.write("\t\toptimizer.step()\n")
         f.write("\t\trunning_loss += loss.item()\n")
-        f.write("\t\t# print running loss\n")
+
+        f.write("\t\tpredicted = torch.max(outputs.data, 1)[1]\n")
+        f.write("\t\tcorrect += (predicted == labels).sum()\n")
+        f.write("# print running loss\n")
+        f.write("\tif epoch % 200 == 199:\n")
+        f.write("\t\tprint('epoch:%d, loss:%.3f % (epoch + 1, running_loss / 200)')\n")
+        f.write("\t\tprint('correct:%.3f % (correct / 200)')\n")
+        f.write("\t\trunning_loss = 0.0\n")
+        f.write("\t\tcorrect = 0.0\n")
         # print running loss
 
         
