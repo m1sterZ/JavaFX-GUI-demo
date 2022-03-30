@@ -9,6 +9,8 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.*;
 
@@ -553,18 +555,19 @@ public class Controller {
             //TODO handle invalid input
             if (res > Integer.MIN_VALUE) list.add(res);
         }
-        int[] tmpArray = new int[list.size()];
-        for (int i = 0; i < list.size(); i++) tmpArray[i] = list.get(i);
-        wrapper.setInDi(tmpArray);
+        int[] inArray = new int[wrapper.getLevel()];
+        for (int i = 0; i < list.size(); i++) inArray[i] = list.get(i);
+        wrapper.setInDi(inArray);
 //        for (int i : tmpArray) System.out.println(i);
         //
         list.clear();
+        int[] outArray = new int[wrapper.getLevel()];
         for (String s : outDimensions) {
             int res = isInt(s, "out_dimensions");
             if (res > Integer.MIN_VALUE) list.add(res);
         }
-        for (int i = 0; i < list.size(); i++) tmpArray[i] = list.get(i);
-        wrapper.setOutDi(tmpArray);
+        for (int i = 0; i < list.size(); i++) outArray[i] = list.get(i);
+        wrapper.setOutDi(outArray);
 //        for (int i : tmpArray) System.out.println(i);
         //
     }
@@ -588,6 +591,7 @@ public class Controller {
     public void disableAll() {
         readbt.setDisable(true);
         netcb.setDisable(true);
+        levelcb.setVisible(true);
         activatorPane.setDisable(true);
         opcb.setDisable(true);
         losscb.setDisable(true);
@@ -598,23 +602,32 @@ public class Controller {
 
     @FXML
     public void generateCode() {
-
-        Alert genAlert = new Alert(
-                Alert.AlertType.CONFIRMATION,
-                "Continue to generate model?",
-                ButtonType.YES,
-                ButtonType.NO,
-                ButtonType.CANCEL
-        );
-        genAlert.setTitle("Confirm");
-        genAlert.showAndWait();
-        if (genAlert.getResult() == ButtonType.YES) {
-//            Platform.exit();
+        String fileName = "./model/sample.py";
+        mkFile(fileName);
+        String codeText = wrapper.toText();
+        System.out.println(codeText);
+        try (FileWriter writer = new FileWriter(new File(fileName))) {
+            writer.write(codeText);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    private void mkFile() {
+    private void mkFile(String fileName) {
         //TODO
+        File file = new File(fileName);
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(
+                    Alert.AlertType.ERROR,
+                    "file already exists!",
+                    ButtonType.OK,
+                    ButtonType.CANCEL
+            );
+            alert.showAndWait();
+        }
     }
 
     public void init(Stage primaryStage) {

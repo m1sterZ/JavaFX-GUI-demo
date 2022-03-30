@@ -12,7 +12,6 @@
 <?import javafx.scene.text.Text?>
 
 <?import javafx.scene.layout.StackPane?>
-<?import com.sun.deploy.uitoolkit.impl.fx.ui.DialogTemplate.SSVChoicePanel?>
 <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="606.0" prefWidth="672.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="demo.Controller">
   <content>
     <AnchorPane fx:id="ap" minHeight="0.0" minWidth="0.0" prefHeight="733.0" prefWidth="653.0">
@@ -46,6 +45,7 @@
                   <ComboBox fx:id="actcb1" layoutY="26.0" prefHeight="23.0" prefWidth="120.0" promptText="level 1">
                      <items>
                         <FXCollections fx:factory="observableArrayList">
+                           <String fx:value="none" />
                            <String fx:value="ReLU" />
                            <String fx:value="Sigmoid" />
                            <String fx:value="Tanh" />
@@ -64,6 +64,7 @@
                   <ComboBox fx:id="actcb2" layoutX="151.0" layoutY="26.0" prefHeight="23.0" prefWidth="120.0" promptText="level 2">
                      <items>
                         <FXCollections fx:factory="observableArrayList">
+                           <String fx:value="none" />
                            <String fx:value="ReLU" />
                            <String fx:value="Sigmoid" />
                            <String fx:value="Tanh" />
@@ -82,6 +83,7 @@
                   <ComboBox fx:id="actcb3" layoutX="303.0" layoutY="26.0" prefHeight="23.0" prefWidth="120.0" promptText="level 3">
                      <items>
                         <FXCollections fx:factory="observableArrayList">
+                           <String fx:value="none" />
                            <String fx:value="ReLU" />
                            <String fx:value="Sigmoid" />
                            <String fx:value="Tanh" />
@@ -100,6 +102,7 @@
                   <ComboBox fx:id="actcb4" layoutX="459.0" layoutY="26.0" prefHeight="23.0" prefWidth="120.0" promptText="level 4">
                      <items>
                         <FXCollections fx:factory="observableArrayList">
+                           <String fx:value="none" />
                            <String fx:value="ReLU" />
                            <String fx:value="Sigmoid" />
                            <String fx:value="Tanh" />
@@ -118,6 +121,7 @@
                   <ComboBox fx:id="actcb5" layoutY="62.0" prefHeight="23.0" prefWidth="120.0" promptText="level 5">
                      <items>
                         <FXCollections fx:factory="observableArrayList">
+                           <String fx:value="none" />
                            <String fx:value="ReLU" />
                            <String fx:value="Sigmoid" />
                            <String fx:value="Tanh" />
@@ -136,6 +140,7 @@
                   <ComboBox fx:id="actcb6" layoutX="151.0" layoutY="62.0" prefHeight="23.0" prefWidth="120.0" promptText="level 6">
                      <items>
                         <FXCollections fx:factory="observableArrayList">
+                           <String fx:value="none" />
                            <String fx:value="ReLU" />
                            <String fx:value="Sigmoid" />
                            <String fx:value="Tanh" />
@@ -154,6 +159,7 @@
                   <ComboBox fx:id="actcb7" layoutX="303.0" layoutY="62.0" prefHeight="23.0" prefWidth="120.0" promptText="level 7">
                      <items>
                         <FXCollections fx:factory="observableArrayList">
+                           <String fx:value="none" />
                            <String fx:value="ReLU" />
                            <String fx:value="Sigmoid" />
                            <String fx:value="Tanh" />
@@ -172,6 +178,7 @@
                   <ComboBox fx:id="actcb8" layoutX="459.0" layoutY="62.0" prefHeight="23.0" prefWidth="120.0" promptText="level 8">
                      <items>
                         <FXCollections fx:factory="observableArrayList">
+                           <String fx:value="none" />
                            <String fx:value="ReLU" />
                            <String fx:value="Sigmoid" />
                            <String fx:value="Tanh" />
