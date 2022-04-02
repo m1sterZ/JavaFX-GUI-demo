@@ -23,6 +23,7 @@ public class Controller {
     @FXML
     public AnchorPane ap;
     public Button readbt;
+    public TextField nodeIdField;
     public ComboBox<String> netcb;
     public ComboBox<String> levelcb;
     public AnchorPane activatorPane;
@@ -452,6 +453,7 @@ public class Controller {
             //
             disableAll();
 //            saveFirst();
+            wrapper.setNodeId(nodeIdField.getText());
             saveActivators();
             saveOp();
             saveLoss();
@@ -590,8 +592,9 @@ public class Controller {
 
     public void disableAll() {
         readbt.setDisable(true);
+        nodeIdField.setDisable(true);
         netcb.setDisable(true);
-        levelcb.setVisible(true);
+        levelcb.setDisable(true);
         activatorPane.setDisable(true);
         opcb.setDisable(true);
         losscb.setDisable(true);

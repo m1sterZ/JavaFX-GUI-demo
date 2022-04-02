@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Wrapper {
+    private String nodeId;
     private String netName;
     private String[] activators;
     private String optimizer;
@@ -14,6 +15,14 @@ public class Wrapper {
     private int epoch;
     private int[] inDi;
     private int[] outDi;
+
+    public String getNodeId() {
+        return nodeId;
+    }
+
+    public void setNodeId(String nodeId) {
+        this.nodeId = nodeId;
+    }
 
     public String getNetName() {
         return netName;
@@ -182,6 +191,7 @@ public class Wrapper {
 
     public String toText() {
         StringBuilder builder = new StringBuilder("");
+        builder.append("#" + this.getNodeId() + "\n");
         builder.append("#" + this.getNetName() + "\n");
         builder.append("#" + this.getLevel() + "\n");
         builder.append("#" + this.formatActivator() + "\n");

@@ -9,6 +9,7 @@ import codecs
 #     f.write("hello world\n")
     # print("1")
 
+# 节点id
 # 网络名
 # 层数
 # 各层激活函数
@@ -20,19 +21,19 @@ import codecs
 
 def generate(file_path):
     #preprocess
-    strs = [None] * 8
+    strs = [None] * 9
     i = 0
     for line in codecs.open(file_path, encoding='utf-8'):
         strs[i] = line[1:-1]
         i = i + 1
-    net_name = strs[0]
-    level = strs[1]
-    activators = strs[2].split(" ")
-    optimizer = strs[3]
-    loss_func = strs[4]
-    epoch = strs[5]
-    in_di = strs[6].split(" ")
-    out_di = strs[7].split(" ")
+    net_name = strs[1]
+    level = strs[2]
+    activators = strs[3].split(" ")
+    optimizer = strs[4]
+    loss_func = strs[5]
+    epoch = strs[6]
+    in_di = strs[7].split(" ")
+    out_di = strs[8].split(" ")
     # print(out_di)
 
     with open(file_path, "a+") as f:
@@ -58,31 +59,33 @@ def generate(file_path):
                 f.write("\t\tx = self.fc" + str(n) + "(x)\n")
         f.write("\t\treturn x\n")
 
-        f.write("\nnet = " + net_name + "()\n")
+        f.write("\ndef train(inputs, labels):\n")
+        f.write("\tnet = " + net_name + "()\n")
 
         # training
-        f.write("criterion = nn." + loss_func + "\n")
-        f.write("optimizer = optim." + optimizer + "\n")
-        f.write("for epoch in range(" + epoch + "):\n")
-        f.write("\trunning_loss = 0.0\n")
-        f.write("\tcorrect = 0.0\n")
-        f.write("\tfor i, data in enumerate(trainloader, 0):\n")
-        f.write("\t\tinputs, labels = data\n")
-        f.write("\t\toptimizer.zero_grad()\n")
-        f.write("\t\toutputs = net(inputs)\n")
-        f.write("\t\tloss = criterion(outputs, labels)\n")
-        f.write("\t\tloss.backward()\n")
-        f.write("\t\toptimizer.step()\n")
-        f.write("\t\trunning_loss += loss.item()\n")
-
-        f.write("\t\tpredicted = torch.max(outputs.data, 1)[1]\n")
-        f.write("\t\tcorrect += (predicted == labels).sum()\n")
-        f.write("# print running loss\n")
-        f.write("\tif epoch % 200 == 199:\n")
-        f.write("\t\tprint('epoch:%d, loss:%.3f % (epoch + 1, running_loss / 200)')\n")
-        f.write("\t\tprint('correct:%.3f % (correct / 200)')\n")
+        f.write("\tcriterion = nn." + loss_func + "\n")
+        f.write("\toptimizer = optim." + optimizer + "\n")
+        f.write("\tfor epoch in range(" + epoch + "):\n")
         f.write("\t\trunning_loss = 0.0\n")
         f.write("\t\tcorrect = 0.0\n")
+        f.write("\t\tfor i in range(len(inputs)):\n")
+        # f.write("\t\t\tinputs, labels = data\n")
+        f.write("\t\t\toptimizer.zero_grad()\n")
+        f.write("\t\t\toutputs = net(inputs[i])\n")
+        f.write("\t\t\tloss = criterion(outputs, labels[i])\n")
+        f.write("\t\t\tloss.backward()\n")
+        f.write("\t\t\toptimizer.step()\n")
+        f.write("\t\t\trunning_loss += loss.item()\n")
+
+        f.write("\t\t\tpredicted = torch.max(outputs.data, 1)[1]\n")
+        f.write("\t\t\tcorrect += (predicted == labels[i]).sum()\n")
+        f.write("# print running loss\n")
+
+        f.write("\t\tif epoch % 200 == 199:\n")
+        f.write("\t\t\tprint('epoch:%d, loss:%.3f % (epoch + 1, running_loss / 200)')\n")
+        f.write("\t\t\tprint('correct:%.3f % (correct / 200)')\n")
+        f.write("\t\t\trunning_loss = 0.0\n")
+        f.write("\t\t\tcorrect = 0.0\n")
         # print running loss
 
         

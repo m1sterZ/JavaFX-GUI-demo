@@ -11,13 +11,17 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<?import javafx.scene.layout.StackPane?>
 <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="606.0" prefWidth="672.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="demo.Controller">
   <content>
     <AnchorPane fx:id="ap" minHeight="0.0" minWidth="0.0" prefHeight="733.0" prefWidth="653.0">
          <children>
+            <Label layoutX="12.0" layoutY="50.0" text="node_id:">
+               <font>
+                  <Font name="Consolas" size="16.0" />
+               </font>
+            </Label>
             <Button fx:id="readbt" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#readFile" text="read" />
-            <ComboBox fx:id="netcb" layoutX="14.0" layoutY="47.0" onAction="#selectNet" prefWidth="150.0" promptText="net">
+            <ComboBox fx:id="netcb" layoutX="252.0" layoutY="47.0" onAction="#selectNet" prefWidth="150.0" promptText="net">
                <items>
                   <FXCollections fx:factory="observableArrayList">
                      <String fx:value="BPNN" />
@@ -26,7 +30,7 @@
                   </FXCollections>
                </items>
             </ComboBox>
-            <ComboBox fx:id="levelcb" layoutX="190.0" layoutY="47.0" onAction="#selectLevel" prefWidth="150.0" promptText="level">
+            <ComboBox fx:id="levelcb" layoutX="427.0" layoutY="47.0" onAction="#selectLevel" prefWidth="150.0" promptText="level">
                <items>
                   <FXCollections fx:factory="observableArrayList">
                      <String fx:value="1" />
@@ -40,7 +44,7 @@
                   </FXCollections>
                </items>
             </ComboBox>
-            <AnchorPane fx:id="activatorPane" layoutX="15.0" layoutY="78.0" prefHeight="99.0" prefWidth="630.0">
+            <AnchorPane fx:id="activatorPane" layoutX="15.0" layoutY="85.0" prefHeight="99.0" prefWidth="630.0">
                <children>
                   <ComboBox fx:id="actcb1" layoutY="26.0" prefHeight="23.0" prefWidth="120.0" promptText="level 1">
                      <items>
@@ -201,7 +205,12 @@
                   </Label>
                </children>
             </AnchorPane>
-            <ComboBox fx:id="opcb" layoutX="14.0" layoutY="177.0" onAction="#selectOp" prefWidth="150.0" promptText="optimizer">
+            <Label layoutX="14.0" layoutY="196.0" text="optimizer:">
+               <font>
+                  <Font name="Consolas" size="16.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="opcb" layoutX="111.0" layoutY="194.0" onAction="#selectOp" prefWidth="150.0" promptText="optimizer">
                <items>
                   <FXCollections fx:factory="observableArrayList">
                      <String fx:value="SGD" />
@@ -215,7 +224,7 @@
                   </FXCollections>
                </items>
             </ComboBox>
-            <AnchorPane fx:id="opPane" layoutX="12.0" layoutY="200.0" prefHeight="110.0" prefWidth="630.0">
+            <AnchorPane fx:id="opPane" layoutX="12.0" layoutY="215.0" prefHeight="110.0" prefWidth="630.0">
                <children>
                   <Text fx:id="opText1" layoutX="6.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="weight_decay:" wrappingWidth="110.0">
                      <font>
@@ -255,7 +264,12 @@
                   <TextField fx:id="opParam6" layoutX="425.0" layoutY="71.0" />
                </children>
             </AnchorPane>
-            <ComboBox fx:id="losscb" layoutX="14.0" layoutY="310.0" onAction="#selectLoss" prefWidth="150.0" promptText="loss function">
+            <Label layoutX="12.0" layoutY="329.0" text="loss function:">
+               <font>
+                  <Font name="Consolas" size="16.0" />
+               </font>
+            </Label>
+            <ComboBox fx:id="losscb" layoutX="144.0" layoutY="326.0" onAction="#selectLoss" prefWidth="150.0" promptText="loss function">
                <items>
                   <FXCollections fx:factory="observableArrayList">
                      <String fx:value="BCELoss" />
@@ -268,7 +282,7 @@
                   </FXCollections>
                </items>
             </ComboBox>
-            <AnchorPane fx:id="lossPane" layoutX="15.0" layoutY="333.0" prefHeight="110.0" prefWidth="630.0">
+            <AnchorPane fx:id="lossPane" layoutX="15.0" layoutY="348.0" prefHeight="110.0" prefWidth="630.0">
                <children>
                   <Text fx:id="lossText1" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="size_average:" wrappingWidth="110.0">
                      <font>
@@ -302,7 +316,7 @@
                   <TextField fx:id="lossParam5" layoutX="110.0" layoutY="77.0" />
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="lastPane" layoutX="15.0" layoutY="435.0" prefHeight="110.0" prefWidth="630.0">
+            <AnchorPane fx:id="lastPane" layoutX="15.0" layoutY="458.0" prefHeight="110.0" prefWidth="630.0">
                <children>
                   <Text layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="epoch:" wrappingWidth="60.0">
                      <font>
@@ -324,8 +338,9 @@
                   <TextField fx:id="outDiField" layoutX="141.0" layoutY="75.0" prefHeight="27.0" prefWidth="275.0" />
                </children>
             </AnchorPane>
-            <Button fx:id="saveSetting" layoutX="14.0" layoutY="545.0" mnemonicParsing="false" onAction="#saveAll" text="save settings" />
-            <Button fx:id="generate" layoutX="144.0" layoutY="545.0" mnemonicParsing="false" onAction="#generateCode" text="generate model" />
+            <Button fx:id="saveSetting" layoutX="15.0" layoutY="577.0" mnemonicParsing="false" onAction="#saveAll" text="save settings" />
+            <Button fx:id="generate" layoutX="144.0" layoutY="577.0" mnemonicParsing="false" onAction="#generateCode" text="generate model" />
+            <TextField fx:id="nodeIdField" layoutX="83.0" layoutY="47.0" prefHeight="23.0" prefWidth="144.0" />
          </children></AnchorPane>
   </content>
 </ScrollPane>
