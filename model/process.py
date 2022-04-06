@@ -34,20 +34,28 @@ def generate(file_path):
     epoch = strs[6]
     in_di = strs[7].split(" ")
     out_di = strs[8].split(" ")
-    # print(out_di)
+
 
     with open(file_path, "a+") as f:
         f.write("import torch\n")
         f.write("import torch.nn as nn\n")
         f.write("import torch.nn.functional as F\n")
         f.write("import torch.optim as optim\n")
+        f.write("import classifier as clf\n")
+        f.write("import random\n")
+
         f.write("\nclass " + net_name + "(nn.Module): \n")
-        f.write("\tdef __init__(self):\n")
+        f.write("\tdef __init__(self, insize, outsize):\n")
         f.write("\t\tsuper(" + net_name + ", self).__init__()\n")
 
         for l in range(int(level)):
             n = l + 1
-            f.write("\t\tself.fc" + str(n) + " = nn.Linear(" + in_di[l] + ", " + out_di[l] + ")\n")
+            if n == 1:
+                f.write("\t\tself.fc" + str(n) + " = nn.Linear(insize, " + out_di[l] + ")\n")
+            elif n == int(level):
+                f.write("\t\tself.fc" + str(n) + " = nn.Linear(" + in_di[l] + ", outsize)\n")
+            else:
+                f.write("\t\tself.fc" + str(n) + " = nn.Linear(" + in_di[l] + ", " + out_di[l] + ")\n")
 
         # forward
         f.write("\n\tdef forward(self, x): \n")
@@ -60,33 +68,44 @@ def generate(file_path):
         f.write("\t\treturn x\n")
 
         f.write("\ndef train(inputs, labels):\n")
-        f.write("\tnet = " + net_name + "()\n")
+        f.write("\tinsize = len(inputs[1,:])\n")
+        f.write("\toutsize = len(labels[1,:])\n")
+        f.write("\tnet = " + net_name + "(insize, outsize)\n")
 
         # training
         f.write("\tcriterion = nn." + loss_func + "\n")
         f.write("\toptimizer = optim." + optimizer + "\n")
+
         f.write("\tfor epoch in range(" + epoch + "):\n")
         f.write("\t\trunning_loss = 0.0\n")
-        f.write("\t\tcorrect = 0.0\n")
+        # f.write("\t\tcorrect = 0.0\n")
+
         f.write("\t\tfor i in range(len(inputs)):\n")
-        # f.write("\t\t\tinputs, labels = data\n")
+        f.write("\t\t\tseed = random.randint(0, len(inputs) - 1)\n")
+        f.write("\t\t\tx = inputs[seed]\n")
+        f.write("\t\t\ty = labels[seed]\n")
+        f.write("\t\t\tx = torch.tensor(x).float()\n")
+        f.write("\t\t\ty = torch.tensor(y).float()\n")
         f.write("\t\t\toptimizer.zero_grad()\n")
-        f.write("\t\t\toutputs = net(inputs[i])\n")
-        f.write("\t\t\tloss = criterion(outputs, labels[i])\n")
+        f.write("\t\t\toutputs = net(x)\n")
+        f.write("\t\t\tloss = criterion(outputs, y)\n")
         f.write("\t\t\tloss.backward()\n")
         f.write("\t\t\toptimizer.step()\n")
         f.write("\t\t\trunning_loss += loss.item()\n")
 
-        f.write("\t\t\tpredicted = torch.max(outputs.data, 1)[1]\n")
-        f.write("\t\t\tcorrect += (predicted == labels[i]).sum()\n")
-        f.write("# print running loss\n")
+        # f.write("\t\t\tpredicted = torch.max(outputs.data, 1)[1]\n")
+        # f.write("\t\t\tcorrect += (predicted == labels[i]).sum()\n")
+        # f.write("# print running loss\n")
 
-        f.write("\t\tif epoch % 200 == 199:\n")
-        f.write("\t\t\tprint('epoch:%d, loss:%.3f % (epoch + 1, running_loss / 200)')\n")
-        f.write("\t\t\tprint('correct:%.3f % (correct / 200)')\n")
+        f.write("\t\tif i % 2000 == 1999:\n")
+        f.write("\t\t\tprint('epoch:%d, loss:%.3f' % (epoch + 1, running_loss / 2000))\n")
+        # f.write("\t\t\tprint('correct:%.3f % (correct / 200)')\n")
         f.write("\t\t\trunning_loss = 0.0\n")
-        f.write("\t\t\tcorrect = 0.0\n")
+        # f.write("\t\t\tcorrect = 0.0\n")
         # print running loss
+
+        f.write("\twrapper = clf.save_model_wrapper(net, inputs, labels)\n")
+        f.write("\treturn wrapper\n")
 
         
     #     f.write("correct = 0.0\n")

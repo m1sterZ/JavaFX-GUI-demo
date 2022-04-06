@@ -36,20 +36,18 @@ def indexes_cal(target,prediction):
 
 ## 统计结果
 
-model_recording=np.load(
-    'exp_result/data_solution_new_1_1_WholeBP_model_recording_info_2021-09-29-00_52_17.npy', allow_pickle=True)
+model_recording=np.load('exp_result/records.npy', allow_pickle=True)
 #[data_recording,training_index,testing_index,a5_target,a5_pridiction,x_dis_loss]
-model_loss=model_recording[5]
+model_loss=model_recording[2]
 model_indexes=[]
-y_target=model_recording[3]
-y_pridiction=model_recording[4]
+y_target=model_recording[0]
+y_pridiction=model_recording[1]
 
 squaredError_avg=[]
 absError_avg=[]
 targetDeviation_avg=[]
 
 stat,p=stats.wilcoxon(y_target[0][0],y_pridiction[0][0], correction=True, alternative="greater")
-
 
 for i in range(len(model_loss)):
     squaredError,absError,targetDeviation = indexes_cal(y_target[i][0], y_pridiction[i][0])
@@ -86,7 +84,7 @@ absError=np.mean(absError_avg,axis=0)
 squaredError=np.mean(squaredError_avg,axis=0)
 targetDeviation=np.mean(targetDeviation_avg,axis=0)
 
-print(" 平均 预测结果对应分析指标:")
+print("平均 预测结果对应分析指标:")
 print("MED = ", np.median(absError))  # 中位数  absError
 print("MAX = ", max(absError))  #   absError
 print("MIN = ", min(absError))  #   absError

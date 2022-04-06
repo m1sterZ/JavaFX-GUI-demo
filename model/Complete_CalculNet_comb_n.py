@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 import sample_classify as sc
+import sample as sp
 import matplotlib.pyplot as plt
 import math
 import json
@@ -214,102 +215,111 @@ output_recording=[]
 print(len(data_recording))
 
 # for i in range(len(data_recording)):
-#     if len(data_recording[i][1])==0:    # data_recording[i][1]为空   需要堆积数据给下一个节点  无output_recording  针对有输入没有输出的节点
-#         temp_recording.append(data_recording[i][2])
-#         data_recording[i].append([])  #保持规律  data_recording  【4】节点训练好的模型， 若为空，表明当前节点无对应模型（当前节点输出空或输入输出为对象）
-#         data_recording[i].append([])  #【5】训练该节点所用输入数据，
-#         data_recording[i].append([])  #【6】所用输出数据
-#     elif data_recording[i][1][0]<0 and i != len(result_record)-1:   # temp_record为-1 (前面的节点无堆积参数，可以直接用本节点的数据进行训练)  且  i不为末位节点（末位节点为Main）
-#         #传参修改 sc.calculNet 网络， 
-#         #优化器 损失函数 激活函数 学习率 层数  每一层的 输入维度 输出维度 迭代次数 
-#         # data_recording[i][2][training_index] 训练集  data_recording[i][3][training_index] labels
-#         data_recording[i].append(sc.calculNet_newlr(data_recording[i][2][training_index], data_recording[i][3][training_index],lrate_init[i],lrate_max[i]))
-#         data_recording[i].append(data_recording[i][2][training_index])
-#         data_recording[i].append(data_recording[i][3][training_index])
-#         output_recording.append(data_recording[i][3])
-#     elif data_recording[i][1][0]<0 and i == len(result_record)-1:  # temp_record为-1   且  i为末位节点    #Main节点的训练 1.区分测试和训练数据，2.需要捆绑第n次节点的输出结果   无需output_recording
-#         if len(output_recording)==1:  # 仅存放一组
-#             temp_output=output_recording[0]
-#         else:   # 循环读取堆积的数据
-#             temp_output = output_recording[0]
-#             for j in range(len(output_recording)-1):
-#                 temp_output=np.hstack((temp_output, output_recording[j+1]))
-#         data_recording[i].append(sc.calculNet_newlr(np.hstack((temp_output[training_index],data_recording[i][2][training_index])), data_recording[i][3][training_index],lrate_init[i],lrate_max[i]))
-#         data_recording[i].append(np.hstack((temp_output[training_index],data_recording[i][2][training_index])))  #输入由2部分构成  1， 前n次输出   2，Main 的输入
-#         data_recording[i].append(data_recording[i][3][training_index])
-#     else:     ## data_recording[i][1]非空 前面的节点有堆积参数，且存放的是indexes  ，需要读取并一并在该节点训练
-#         temp_data=temp_recording[0]
-#         data_recording[i].append(sc.calculNet_newlr(temp_data[training_index],data_recording[i][3][training_index],lrate_init[i],lrate_max[i]))
-#         data_recording[i].append(temp_data[training_index])
-#         data_recording[i].append(data_recording[i][3][training_index])
-#         output_recording.append(data_recording[i][3])
-#         temp_recording=[]
+def training(i):
+    global temp_recording
+    if len(data_recording[i][1])==0:    # data_recording[i][1]为空   需要堆积数据给下一个节点  无output_recording  针对有输入没有输出的节点
+        temp_recording.append(data_recording[i][2])
+        data_recording[i].append([])  #保持规律  data_recording  【4】节点训练好的模型， 若为空，表明当前节点无对应模型（当前节点输出空或输入输出为对象）
+        data_recording[i].append([])  #【5】训练该节点所用输入数据，
+        data_recording[i].append([])  #【6】所用输出数据
+    elif data_recording[i][1][0]<0 and i != len(result_record)-1:   # temp_record为-1 (前面的节点无堆积参数，可以直接用本节点的数据进行训练)  且  i不为末位节点（末位节点为Main）
+        #传参修改 sc.calculNet 网络， 
+        #优化器 损失函数 激活函数 学习率 层数  每一层的 输入维度 输出维度 迭代次数 
+        # data_recording[i][2][training_index] 训练集  data_recording[i][3][training_index] labels
+        data_recording[i].append(sc.calculNet_newlr(data_recording[i][2][training_index], data_recording[i][3][training_index],lrate_init[i],lrate_max[i]))
+        data_recording[i].append(data_recording[i][2][training_index])
+        data_recording[i].append(data_recording[i][3][training_index])
+        output_recording.append(data_recording[i][3])
+    elif data_recording[i][1][0]<0 and i == len(result_record)-1:  # temp_record为-1   且  i为末位节点    #Main节点的训练 1.区分测试和训练数据，2.需要捆绑第n次节点的输出结果   无需output_recording
+        if len(output_recording)==1:  # 仅存放一组
+            temp_output=output_recording[0]
+        else:   # 循环读取堆积的数据
+            temp_output = output_recording[0]
+            for j in range(len(output_recording)-1):
+                temp_output=np.hstack((temp_output, output_recording[j+1]))
+        data_recording[i].append(sc.calculNet_newlr(np.hstack((temp_output[training_index],data_recording[i][2][training_index])), data_recording[i][3][training_index],lrate_init[i],lrate_max[i]))
+        data_recording[i].append(np.hstack((temp_output[training_index],data_recording[i][2][training_index])))  #输入由2部分构成  1， 前n次输出   2，Main 的输入
+        data_recording[i].append(data_recording[i][3][training_index])
+    else:     ## data_recording[i][1]非空 前面的节点有堆积参数，且存放的是indexes  ，需要读取并一并在该节点训练
+        temp_data=temp_recording[0]
+        data_recording[i].append(sc.calculNet_newlr(temp_data[training_index],data_recording[i][3][training_index],lrate_init[i],lrate_max[i]))
+        data_recording[i].append(temp_data[training_index])
+        data_recording[i].append(data_recording[i][3][training_index])
+        output_recording.append(data_recording[i][3])
+        temp_recording=[]
+training(1)
 
 # # 只有模型输入和输出  完成完整模型的串联
 # # 从输入参数开始，父代的输出参数即为子代的输入参数
-# x_loss=[]
-# x_dis_loss=[]
-# x_temp = data_recording[len(data_recording)-1][2][testing_index]
-# y_temp = data_recording[len(data_recording)-1][3][testing_index]
-# y = torch.tensor(y_temp).float()
-# testing_pararecording=[]
-# testing_outputrecording=[]
+x_loss=[]
+x_dis_loss=[]
+x_temp = data_recording[len(data_recording)-1][2][testing_index]
+y_temp = data_recording[len(data_recording)-1][3][testing_index]
+y = torch.tensor(y_temp).float()
+testing_pararecording=[]
+testing_outputrecording=[]
 # for i in range(len(data_recording)):
-#     if len(data_recording[i][1]) == 0:
-#         testing_pararecording.append(x_temp)
-#         y_pre=x_temp
-#         data_recording[i].append([])
-#     elif data_recording[i][1][0]<0 and i != len(result_record)-1:
-#         y_pre=testfunc(data_recording[i][4],x_temp)  #模型+输入
-#         data_recording[i].append(y_pre)
-#         testing_outputrecording.append(y_pre)
-#     elif data_recording[i][1][0]<0 and i == len(result_record)-1:  #Main 1. 区分测试和训练数据，2. 需要捆绑第n次节点的输出结果
-#         if len(testing_outputrecording)==1:  # 仅存放一组
-#             temp_trainingoutput=testing_outputrecording[0]
-#         else:   # 循环读取堆积的数据
-#             temp_trainingoutput = testing_outputrecording[0]
-#             for j in range(len(testing_outputrecording)-1):
-#                 temp_trainingoutput=np.hstack((temp_trainingoutput, testing_outputrecording[j+1]))
-#         y_pre=testfunc(data_recording[i][4],np.hstack((temp_trainingoutput, data_recording[len(data_recording) - 1][2][testing_index])))
-#         data_recording[i].append(y_pre)
-#     else:
-#         temp_data=testing_pararecording[0]
-#         y_pre = testfunc(data_recording[i][4],temp_data)
-#         testing_pararecording=[]
-#         data_recording[i].append(y_pre)
-#         testing_outputrecording.append(y_pre)
-#     x_temp=y_pre    # 将输出加载为下一个节点的输入
+def test_record(i):
+    global testing_pararecording
+    global testing_outputrecording
+    global x_temp
+    global y_temp
+    if len(data_recording[i][1]) == 0:
+        testing_pararecording.append(x_temp)
+        y_pre=x_temp
+        data_recording[i].append([])
+    elif data_recording[i][1][0]<0 and i != len(result_record)-1:
+        y_pre=testfunc(data_recording[i][4],x_temp)  #模型+输入
+        data_recording[i].append(y_pre)
+        testing_outputrecording.append(y_pre)
+    elif data_recording[i][1][0]<0 and i == len(result_record)-1:  #Main 1. 区分测试和训练数据，2. 需要捆绑第n次节点的输出结果
+        if len(testing_outputrecording)==1:  # 仅存放一组
+            temp_trainingoutput=testing_outputrecording[0]
+        else:   # 循环读取堆积的数据
+            temp_trainingoutput = testing_outputrecording[0]
+            for j in range(len(testing_outputrecording)-1):
+                temp_trainingoutput=np.hstack((temp_trainingoutput, testing_outputrecording[j+1]))
+        y_pre=testfunc(data_recording[i][4],np.hstack((temp_trainingoutput, data_recording[len(data_recording) - 1][2][testing_index])))
+        data_recording[i].append(y_pre)
+    else:
+        temp_data=testing_pararecording[0]
+        y_pre = testfunc(data_recording[i][4],temp_data)
+        testing_pararecording=[]
+        data_recording[i].append(y_pre)
+        testing_outputrecording.append(y_pre)
+    x_temp=y_pre    # 将输出加载为下一个节点的输入
+test_record(1)
 
 # # 最后一个模型Main的输出y_pre即为完整计算图的输出结果。
 # # 基于模型输出和完整计算图的输出计算误差。
 
-# a4=[]
-# x_dis_loss=[]
-# for i in range(len(y_pre[1])):
-#     for j in range(len(y_pre)):
-#         a4.append(np.sum(np.array(y[j][i].detach().numpy()) - y_pre[j][i]))
-#     x_dis_loss.append([a4])
-#     a4 = []
+a4=[]
+x_dis_loss=[]
+for i in range(len(y_pre[1])):
+    for j in range(len(y_pre)):
+        a4.append(np.sum(np.array(y[j][i].detach().numpy()) - y_pre[j][i]))
+    x_dis_loss.append([a4])
+    a4 = []
 
-# a4_target=[]
-# a4_pridiction=[]
-# a5_target=[]
-# a5_pridiction=[]
-# for i in range(len(y_pre[1])):
-#     for j in range(len(y_pre)):
-#         a4_target.append(y[j][i].item())
-#         a4_pridiction.append(y_pre[j][i])
-#     a5_target.append([a4_target])  # y  原结果
-#     a5_pridiction.append([a4_pridiction])   #y_pre  实际结果
-#     a4_target = []
-#     a4_pridiction = []
+a4_target=[]
+a4_pridiction=[]
+a5_target=[]
+a5_pridiction=[]
+for i in range(len(y_pre[1])):
+    for j in range(len(y_pre)):
+        a4_target.append(y[j][i].item())
+        a4_pridiction.append(y_pre[j][i])
+    a5_target.append([a4_target])  # y  原结果
+    a5_pridiction.append([a4_pridiction])   #y_pre  实际结果
+    a4_target = []
+    a4_pridiction = []
 
-# a3 = []
-# a3.append(data_recording) #所有数据
-# a3.append(training_index) #训练样本的index
-# a3.append(testing_index) #测试样本的index
-# a3.append(a5_target) #预期值
-# a3.append(a5_pridiction) #实际值
-# a3.append(x_dis_loss) #误差
-# now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
+a3 = []
+a3.append(data_recording) #所有数据
+a3.append(training_index) #训练样本的index
+a3.append(testing_index) #测试样本的index
+a3.append(a5_target) #预期值
+a3.append(a5_pridiction) #实际值
+a3.append(x_dis_loss) #误差
+now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
 # np.save('./exp_result/'+filename+'_CalculNet_model_recording_info_'+now+'.npy', a3)

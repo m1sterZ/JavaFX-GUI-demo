@@ -102,7 +102,9 @@ def calculNet_newlr(Input, Output,lrate,lrate_max):
         loss_for_node = np.abs((All_out - All_y).detach().numpy())
         loss_for_node = np.sum(loss_for_node, axis=1) / ousize
         loss_for_node = np.resize(loss_for_node, (np.shape(loss_for_node)[0], 1)) #获得节点误差--获得初始模型误差
-
+#----------------------------------------------------------
+#
+#----------------------------------------------------------
         sc_er.class_feature(All_x.detach().numpy(), All_y.detach().numpy(), loss_for_node, 3, insize, ousize, model,
                             model[i].id, 0, method='percent') #确定子代节点，依据损失确定子代节点的误差
         feature_list = sc_er.feature_list
@@ -120,10 +122,29 @@ def calculNet_newlr(Input, Output,lrate,lrate_max):
     #lrate=0.000005
     classify_net_main_epoch=30000
     now = time.strftime("%Y-%m-%d-%H_%M_%S", time.localtime(time.time()))
+#------------------------------------------------------------------------------------------------------------------
+#
+#-------------------------------------------------------------------------------------------------------------------
     classify_net_main(insize, ousize, net_id, lrate, X_sample[0], Y_sample[0], 4, 3, classify_net_main_epoch, sc_er, model_list,
                       optimer_list, loss_fun_list, -1, model_and_feature, loss_list, 2,lrate_max,now)
     # print('sc_er.model_list',sc_er.model_list)
     # print('sc_er.detth',sc_er.depth_list)
+#-----------------------------------------------------------------------------------------------------------------
+# model_and_feature: 
+# 0:模型Classify_Net(
+#   (Base): Linear(in_features=2, out_features=16, bias=True)
+#   (Base1): Linear(in_features=16, out_features=32, bias=True)
+#   (Base4): Linear(in_features=32, out_features=16, bias=True)
+#   (Out): Linear(in_features=16, out_features=2, bias=True)
+#   (act): Tanh()
+# )，
+# 1:feature_for_model [array([1.1798803e+02, 1.0909800e+01, 5.3365448e+02, 3.0777541e+04],
+#   dtype=float32), array([2.4720728e+02, 2.0342085e+01, 4.3221943e+03, 1.8848132e+06],
+#   dtype=float32), array([3.9448428e+02, 3.2019482e+01, 1.2477632e+04, 1.2921401e+07],
+#   dtype=float32)]
+# 2:sum(All_x)/len(All_x) tensor([250.8402,  20.7928])
+# 3:len(All_x) 17964
+# ------------------------------------------------------------------------------------------------------------------    
     print(model_and_feature)
     for i in range(len(model_and_feature)):
         model_par1 = model_and_feature[i][0].state_dict()
@@ -875,7 +896,7 @@ class Net(torch.nn.Module):
 class Classify_Net(torch.nn.Module):
     def __init__(self, insize,outsize,id=-1):
         super(Classify_Net, self).__init__()
-        self.id=id;
+        self.id=id
         self.Base=torch.nn.Linear(insize,16)
         self.Base1=torch.nn.Linear(16,32)
         # self.Base2=torch.nn.Linear(32,64)

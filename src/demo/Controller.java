@@ -71,8 +71,20 @@ public class Controller {
 
     @FXML
     public void readFile() {
-        fileChooser.setTitle("open a file");
-        File file = fileChooser.showOpenDialog(stage);
+//        fileChooser.setTitle("open a file");
+//        File file = fileChooser.showOpenDialog(stage);
+        Process process;
+        System.out.println("---read---");
+        try {
+            String[] cmdstr = new String[]{"cmd.exe", "cd C:\\H\\Java codes\\JavaFX-GUI-demo\\model", "python json2diagram.py"};
+            process = Runtime.getRuntime().exec(cmdstr);
+            process.waitFor();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("---end---");
     }
 
     @FXML
@@ -611,6 +623,15 @@ public class Controller {
         System.out.println(codeText);
         try (FileWriter writer = new FileWriter(new File(fileName))) {
             writer.write(codeText);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Process process;
+        try {
+            process = Runtime.getRuntime().exec("python C:\\H\\Java codes\\JavaFX-GUI-demo\\model\\process.py");
+            process.waitFor();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

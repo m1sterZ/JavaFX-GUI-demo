@@ -109,7 +109,8 @@ public class Wrapper {
         for (String s : this.getActivators()) {
             builder.append(s + " ");
         }
-        return builder.toString().trim();
+        String str = builder.toString().trim();
+        return str.toLowerCase();
     }
 
     public String formatInDi() {
@@ -141,7 +142,7 @@ public class Wrapper {
         StringBuilder builder = new StringBuilder("");
         //
         Map<String, String[]> map = new HashMap<>();
-        map.put("SGD", new String[]{"momentum=", "dampening=", "weight_decay=", "neserov="});
+        map.put("SGD", new String[]{"momentum=", "dampening=", "weight_decay=", "nesterov="});
         map.put("ASGD", new String[]{"lambd=", "alpha=", "t0=", "weight_decay="});
         map.put("Rprop", new String[]{"etas=", "step_sizes="});
         map.put("Adagrad", new String[]{"lr_decay=", "weight_decay="});
@@ -149,7 +150,7 @@ public class Wrapper {
         map.put("RMSprop", new String[]{"alpha=", "eps=", "weight_decay=", "momentum=", "centered="});
         map.put("Adam", new String[]{"betas=", "eps=", "weight_decay="});
         map.put("Adamax", new String[]{"betas=", "eps=", "weight_decay="});
-        builder.append("#" + this.getOptimizer() + "(params, lr=");
+        builder.append("#" + this.getOptimizer() + "(net.parameters(), lr=");
         builder.append(this.getOpParams()[0] + ", ");
         String[] texts = map.get(this.getOptimizer());
         for (int i = 0; i < texts.length; i++) {
