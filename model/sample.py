@@ -2,9 +2,9 @@
 #BPNN
 #3
 #relu relu none
-#SGD(net.parameters(), lr=0.01, momentum=0.9, dampening=0, weight_decay=0, nesterov=False)
+#SGD(net.parameters(), lr=0.01, momentum=0, dampening=0, weight_decay=0, nesterov=False)
 #SmoothL1Loss(size_average=True, reduce=True, reduction='mean', beta=1.0)
-#3
+#2
 #10 16 32
 #16 32 10
 import torch
@@ -31,9 +31,9 @@ def train(inputs, labels):
 	insize = len(inputs[1,:])
 	outsize = len(labels[1,:])
 	net = BPNN(insize, outsize)
-	criterion = nn.SmoothL1Loss()
-	optimizer = optim.SGD(net.parameters(), lr=0.01, momentum=0.9, dampening=0, weight_decay=0, nesterov=False)
-	for epoch in range(3):
+	criterion = nn.SmoothL1Loss(size_average=True, reduce=True, reduction='mean', beta=1.0)
+	optimizer = optim.SGD(net.parameters(), lr=0.01, momentum=0, dampening=0, weight_decay=0, nesterov=False)
+	for epoch in range(2):
 		running_loss = 0.0
 		for i in range(len(inputs)):
 			seed = random.randint(0, len(inputs) - 1)
@@ -47,8 +47,8 @@ def train(inputs, labels):
 			loss.backward()
 			optimizer.step()
 			running_loss += loss.item()
-		if i % 2000 == 1999:
-			print('epoch:%d, loss:%.3f' % (epoch + 1, running_loss / 2000))
-			running_loss = 0.0
+			if i % 2000 == 1999:
+				print('epoch:%d, loss:%.3f' % (epoch + 1, running_loss / 2000))
+				running_loss = 0.0
 	wrapper = clf.save_model_wrapper(net, inputs, labels)
 	return wrapper

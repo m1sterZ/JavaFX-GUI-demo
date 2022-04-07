@@ -49,9 +49,11 @@ def toDot():
         f.write("digraph Process_Tree {\n")
         f.write("node [shape=box];\n")
         point_id = 0
+        node_id = 0
         for node in node_map:
             if node != '':
-                f.write(str(point_id) + " [label=\"" + node + "\"];\n")
+                f.write(str(point_id) + " [label=\"node_id = " + str(node_id) + "\n" + node + "\"];\n")
+                node_id += 1
             else:
                 f.write(str(point_id) + " [label=\" ----> \"];\n")
             point_id += 1
@@ -59,12 +61,9 @@ def toDot():
             f.write(str(pairs[0] - 1) + " -> " + str(pairs[1] - 1) + ";\n")
         f.write("}")
 toDot()
-# cmd1 = "cd .."
 cmd2 = "cd C:\H\Java codes\jsonsave"
 cmd3 = "dot -Tpng diagram.dot -o diagram.png"
-# cmd = cmd1 + '&&' + cmd1 + '&&' + cmd2 + '&&' + cmd3
 cmd = cmd2 + '&&' + cmd3
-# os.system('cmd1 && cmd1 && cmd2 && cmd3')
 subprocess.Popen(cmd, shell = True)
 subprocess.call(cmd, shell = True)
 # dot -Tpng diagram.dot -o diagram.png

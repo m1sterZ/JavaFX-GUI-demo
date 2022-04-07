@@ -97,10 +97,10 @@ def generate(file_path):
         # f.write("\t\t\tcorrect += (predicted == labels[i]).sum()\n")
         # f.write("# print running loss\n")
 
-        f.write("\t\tif i % 2000 == 1999:\n")
-        f.write("\t\t\tprint('epoch:%d, loss:%.3f' % (epoch + 1, running_loss / 2000))\n")
+        f.write("\t\t\tif i % 2000 == 1999:\n")
+        f.write("\t\t\t\tprint('epoch:%d, loss:%.3f' % (epoch + 1, running_loss / 2000))\n")
         # f.write("\t\t\tprint('correct:%.3f % (correct / 200)')\n")
-        f.write("\t\t\trunning_loss = 0.0\n")
+        f.write("\t\t\t\trunning_loss = 0.0\n")
         # f.write("\t\t\tcorrect = 0.0\n")
         # print running loss
 
