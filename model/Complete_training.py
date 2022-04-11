@@ -12,15 +12,6 @@ import random
 import time
 from math import sqrt
 
-#替换calculnet为新生成的模型函数
-#215注释
-
-#data_recording 矩阵保存模型 训练过的类
-#214-243替换成自己的模型
-#标识模型是对哪一个节点
-# for i in range(len(data_recording)): i标识具体哪一个节点
-#rnn, lstm同理， 如rnn(.....) lstm(....) 在模型代码直接补充训练部分
-
 
 # #读json 划分整个流程树所有节点的输入输出数据集
 class GetKeyValue(object):

@@ -11,12 +11,17 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.NumberFormat;
 import java.util.*;
 
 public class Controller {
     private Stage stage;
     public FileChooser fileChooser = new FileChooser();
+    private String outputString = "../output";
+    public String logName;
     private Wrapper wrapper;
     private Map<String, Integer> opMap = new HashMap<>();
     private Map<String, Integer> lossMap = new HashMap<>();
@@ -73,19 +78,39 @@ public class Controller {
     public void readFile() {
         fileChooser.setTitle("open a file");
         File file = fileChooser.showOpenDialog(stage);
-        Process process;
-        System.out.println("---read---");
-        try {
-            String cmdstr = "python json2diagram.py";
-            File dir = new File("C:\\H\\Java codes\\JavaFX-GUI-demo\\model");
-            process = Runtime.getRuntime().exec(cmdstr, null, dir);
-            process.waitFor();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        String fileName = file.getName();
+        String logPath = file.getAbsolutePath();
+        String[] strs = fileName.split("\\.");
+        logName = strs[0];
+        String logDir = outputString + "/" + logName;
+        File logDirFile = new File(logDir);
+        if (!logDirFile.exists()) {
+            logDirFile.mkdir();
         }
-        System.out.println("---end---");
+        // copy日志文件到output/log1/log1.txt目录下
+        File targetLog = new File(logDir + "/" + fileName);
+        if (!targetLog.exists()) {
+            try {
+                Files.copy(Paths.get(logPath), Paths.get(logDir + "/" + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Process process;
+//        System.out.println("---read---");
+//        try {
+//            //TODO 加上json路径和图像的目标路径作为参数
+//            String targetDir = "";
+//            String cmdstr = "python json2diagram.py " + jsonPath + " " + targetDir;
+//            File dir = new File("C:\\H\\Java codes\\JavaFX-GUI-demo\\model");
+//            process = Runtime.getRuntime().exec(cmdstr, null, dir);
+//            process.waitFor();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println("---end---");
     }
 
     @FXML
@@ -618,7 +643,19 @@ public class Controller {
 
     @FXML
     public void generateCode() {
-        String fileName = "./model/sample.py";
+        // 保存路径/output/log1/node1/....
+
+        String logOutputString = outputString + "/" + logName;
+        File logOutputDir = new File(logOutputString);
+        if (!logOutputDir.exists()) {
+            logOutputDir.mkdir();
+        }
+        String nodeOutputString = logOutputString + "/node" + wrapper.getNodeId();
+        File nodeOutputDir = new File(nodeOutputString);
+        if (!nodeOutputDir.exists()) {
+            nodeOutputDir.mkdir();
+        }
+        String fileName = nodeOutputString + "/sample.py";
         mkFile(fileName);
         String codeText = wrapper.toText();
         System.out.println(codeText);
@@ -683,6 +720,11 @@ public class Controller {
         lastPane.setVisible(false);
         generate.setDisable(true);
         this.stage = primaryStage;
+
+        File outputDir = new File(outputString);
+        if (!outputDir.exists()) {
+            outputDir.mkdir();
+        }
     }
 
 }

@@ -1,9 +1,14 @@
 import json
 import os
 import subprocess
+import sys
 
+args = sys.argv
+json_path = args[1]
+dot_path = args[2] + '/diagram.dot'
 file_content = ''
-with open('C:\H\Java codes\jsonsave\data1.json') as fin:
+# with open('C:\H\Java codes\jsonsave\data1.json') as fin:
+with open(json_path) as fin:
     file_content = fin.read()
 tree = json.loads(file_content)
 
@@ -44,8 +49,10 @@ for i in range(num):
         if out_edges[j][1] == i + 1:
             node_map.append(outputs[j][1])
             break
+
 def toDot():
-    with open('C:\H\Java codes\jsonsave\diagram.dot', 'w') as f:
+    # with open('C:\H\Java codes\jsonsave\diagram.dot', 'w') as f:
+    with open(dot_path, 'w') as f:
         f.write("digraph Process_Tree {\n")
         f.write("node [shape=box];\n")
         point_id = 0
@@ -61,8 +68,9 @@ def toDot():
             f.write(str(pairs[0] - 1) + " -> " + str(pairs[1] - 1) + ";\n")
         f.write("}")
 toDot()
-cmd2 = "cd C:\H\Java codes\jsonsave"
-cmd3 = "dot -Tpng diagram.dot -o diagram.png"
+# cmd2 = "cd C:\H\Java codes\jsonsave"
+cmd2 = "cd " + args[2]
+cmd3 = "dot -Tpng diagram.dot -o tree.png"
 cmd = cmd2 + '&&' + cmd3
 subprocess.Popen(cmd, shell = True)
 subprocess.call(cmd, shell = True)

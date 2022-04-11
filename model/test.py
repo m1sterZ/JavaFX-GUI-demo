@@ -1,10 +1,11 @@
 import torch
+import sys
 def test():
     arr = []
     func(arr)
     print(arr)
 
-def func(arr):
-    arr.append('123')
-
+# print("1")
+print('num:' + str(len(sys.argv)))
+print(str(sys.argv))
 # test()
