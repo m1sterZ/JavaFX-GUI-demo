@@ -76,9 +76,10 @@ public class Controller {
 
     @FXML
     public void readFile() {
-        fileChooser.setTitle("open a file");
+        fileChooser.setTitle("open log file");
         File file = fileChooser.showOpenDialog(stage);
-        String fileName = file.getName();
+        String fileName = file.getName();   //fileName带文件后缀
+        // 输入日志的绝对路径
         String logPath = file.getAbsolutePath();
         String[] strs = fileName.split("\\.");
         logName = strs[0];
@@ -96,10 +97,26 @@ public class Controller {
                 e.printStackTrace();
             }
         }
+        // output/log1/ output目录下的绝对路径
+        String logAbsoluteDir = targetLog.getAbsolutePath().replace(fileName, "");
+        String currentPath = System.getProperty("user.dir");
+//        System.out.println(currentPath);
         Process process;
-//        System.out.println("---read---");
+        // 读取日志，生成json
+        // java -jar ProgramCallLogic_Code.jar C:\H\Java_codes\solution12 C:\H\Java_codes\output\SimpleTestlog1
+        try {
+            String cmdstr = "java -jar ProgramCallLogic_Code.jar " + logAbsoluteDir + " " + logAbsoluteDir;
+//            System.out.println(logAbsoluteDir);
+//            System.out.println(currentPath);
+//            System.out.println(cmdstr);
+            File cmdPath = new File(currentPath);
+            process = Runtime.getRuntime().exec(cmdstr, null, cmdPath);
+            process.waitFor();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
 //        try {
-//            //TODO 加上json路径和图像的目标路径作为参数
+//            //TODO 加上json路径和图像的目标路径作为参数 路径不能有空格
 //            String targetDir = "";
 //            String cmdstr = "python json2diagram.py " + jsonPath + " " + targetDir;
 //            File dir = new File("C:\\H\\Java codes\\JavaFX-GUI-demo\\model");
