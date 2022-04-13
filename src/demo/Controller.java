@@ -73,6 +73,9 @@ public class Controller {
     public Button saveSetting;
     public Button generate;
 
+    /**
+     * 所有文件目录不能带有空格！！！
+     */
 
     @FXML
     public void readFile() {
@@ -103,31 +106,33 @@ public class Controller {
 //        System.out.println(currentPath);
         Process process;
         // 读取日志，生成json
-        // java -jar ProgramCallLogic_Code.jar C:\H\Java_codes\solution12 C:\H\Java_codes\output\SimpleTestlog1
-        try {
-            String cmdstr = "java -jar ProgramCallLogic_Code.jar " + logAbsoluteDir + " " + logAbsoluteDir;
-//            System.out.println(logAbsoluteDir);
-//            System.out.println(currentPath);
-//            System.out.println(cmdstr);
-            File cmdPath = new File(currentPath);
-            process = Runtime.getRuntime().exec(cmdstr, null, cmdPath);
-            process.waitFor();
-        } catch (Throwable e) {
-            e.printStackTrace();
+        // java -jar ProgramCallLogic_Code.jar C:\H\Java_codes\JavaFX-GUI-demo\..\output\solution12_small\
+        // C:\H\Java_codes\JavaFX-GUI-demo\..\output\solution12_small\
+        String jsonPath = logAbsoluteDir + "data1.json";
+        if (!new File(jsonPath).exists()) {
+            try {
+                String cmdstr = "java -jar ProgramCallLogic_Code.jar " + logAbsoluteDir + " " + logAbsoluteDir;
+//              System.out.println(logAbsoluteDir);
+//              System.out.println(currentPath);
+//              System.out.println(cmdstr);
+                process = Runtime.getRuntime().exec(cmdstr, null, new File(currentPath));
+                process.waitFor();
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
         }
-//        try {
-//            //TODO 加上json路径和图像的目标路径作为参数 路径不能有空格
-//            String targetDir = "";
-//            String cmdstr = "python json2diagram.py " + jsonPath + " " + targetDir;
-//            File dir = new File("C:\\H\\Java codes\\JavaFX-GUI-demo\\model");
-//            process = Runtime.getRuntime().exec(cmdstr, null, dir);
-//            process.waitFor();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println("---end---");
+        // json生成流程树png图像
+        String dotPath = logAbsoluteDir + "diagram.dot";
+        if (!new File(dotPath).exists()) {
+            try {
+                String pyDir = currentPath + "\\model";
+                String cmdstr = "python json2diagram.py " + jsonPath + " " + logAbsoluteDir;
+                process = Runtime.getRuntime().exec(cmdstr, null, new File(pyDir));
+                process.waitFor();
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @FXML
