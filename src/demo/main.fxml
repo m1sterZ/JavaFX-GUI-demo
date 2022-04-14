@@ -5,21 +5,22 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="606.0" prefWidth="672.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="demo.Controller">
-  <content>
-      <TabPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="demo.Controller">
+  <center>
+      <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <tabs>
             <Tab fx:id="main" closable="false" text="main">
                <content>
-                <AnchorPane fx:id="ap" minHeight="0.0" minWidth="0.0" prefHeight="733.0" prefWidth="653.0">
+                <AnchorPane fx:id="ap" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="733.0" prefWidth="785.0">
                      <children>
                         <Label layoutX="12.0" layoutY="50.0" text="node_id:">
                            <font>
@@ -230,7 +231,7 @@
                               </FXCollections>
                            </items>
                         </ComboBox>
-                        <AnchorPane fx:id="opPane" layoutX="12.0" layoutY="215.0" prefHeight="110.0" prefWidth="630.0">
+                        <AnchorPane fx:id="opPane" layoutX="12.0" layoutY="215.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0" prefWidth="630.0">
                            <children>
                               <Text fx:id="opText1" layoutX="6.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="weight_decay:" wrappingWidth="110.0">
                                  <font>
@@ -288,7 +289,7 @@
                               </FXCollections>
                            </items>
                         </ComboBox>
-                        <AnchorPane fx:id="lossPane" layoutX="15.0" layoutY="348.0" prefHeight="110.0" prefWidth="630.0">
+                        <AnchorPane fx:id="lossPane" layoutX="15.0" layoutY="348.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0" prefWidth="630.0">
                            <children>
                               <Text fx:id="lossText1" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="size_average:" wrappingWidth="110.0">
                                  <font>
@@ -322,7 +323,7 @@
                               <TextField fx:id="lossParam5" layoutX="110.0" layoutY="77.0" />
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="lastPane" layoutX="15.0" layoutY="458.0" prefHeight="110.0" prefWidth="630.0">
+                        <AnchorPane fx:id="lastPane" layoutX="15.0" layoutY="458.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0" prefWidth="630.0">
                            <children>
                               <Text layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="epoch:" wrappingWidth="60.0">
                                  <font>
@@ -351,17 +352,21 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab fx:id="image" closable="false" text="image">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-              </content>
+            <Tab fx:id="imageTab" closable="false" onSelectionChanged="#showImage" text="image">
+               <content>
+                  <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="800.0">
+                     <center>
+                        <ImageView fx:id="imageView" fitHeight="700.0" fitWidth="795.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+               </content>
             </Tab>
-            <Tab fx:id="report" closable="false" text="report">
+            <Tab fx:id="reportTab" closable="false" text="report">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
             </Tab>
          </tabs>
       </TabPane>
-  </content>
-</ScrollPane>
+  </center>
+</BorderPane>

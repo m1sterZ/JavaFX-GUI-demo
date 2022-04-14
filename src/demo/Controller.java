@@ -4,11 +4,17 @@ import com.sun.xml.internal.ws.util.StringUtils;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,11 +27,15 @@ public class Controller {
     private Stage stage;
     public FileChooser fileChooser = new FileChooser();
     private String outputString = "../output";
+    private String pngPath;
     public String logName;
     private Wrapper wrapper;
     private Map<String, Integer> opMap = new HashMap<>();
     private Map<String, Integer> lossMap = new HashMap<>();
+
+
     @FXML
+    public HBox outBox;
     public AnchorPane ap;
     public Button readbt;
     public TextField nodeIdField;
@@ -72,6 +82,10 @@ public class Controller {
     public TextField outDiField;
     public Button saveSetting;
     public Button generate;
+    public Tab imageTab;
+    public HBox hBox;
+    public ImageView imageView;
+    public Tab reportTab;
 
     /**
      * 所有文件目录不能带有空格！！！
@@ -123,6 +137,7 @@ public class Controller {
         }
         // json生成流程树png图像
         String dotPath = logAbsoluteDir + "diagram.dot";
+        this.pngPath = logAbsoluteDir + "tree.png";
         if (!new File(dotPath).exists()) {
             try {
                 String pyDir = currentPath + "\\model";
@@ -747,6 +762,24 @@ public class Controller {
         if (!outputDir.exists()) {
             outputDir.mkdir();
         }
+
+        outBox.setHgrow(ap, Priority.ALWAYS);
+    }
+
+    @FXML
+    public void showImage() {
+        if (new File(pngPath).exists()) {
+            try {
+                FileInputStream input = new FileInputStream(pngPath);
+                Image image = new Image(input);
+                imageView.setImage(image);
+                // 图片宽度随窗口大小变化
+                imageView.fitWidthProperty().bind(stage.widthProperty());
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
 }

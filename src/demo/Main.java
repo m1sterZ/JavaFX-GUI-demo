@@ -14,7 +14,7 @@ public class Main extends Application {
         Controller controller = loader.getController();
         controller.init(primaryStage);
         primaryStage.setTitle("JavaFX demo");
-        primaryStage.setScene(new Scene(root, 700, 700));
+        primaryStage.setScene(new Scene(root, 800, 700));
         primaryStage.show();
     }
 
