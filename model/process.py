@@ -2,6 +2,7 @@ import os
 #for reading utf-8
 import codecs
 # # encoding utf-8
+import sys
 
 # # write
 # file_path = "sample.py"
@@ -125,4 +126,8 @@ def generate(file_path):
         # optim.Adam(params, lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
         # optim.Adamax(params, lr=0.002, betas=(0.9, 0.999), eps=1e-08, weight_decay=0)
     
-generate("sample.py")
+args = sys.argv
+# print(args[1])
+# python args[0] args[1]
+# args[0] 是自己， args[1] 是被目标文件
+generate(args[1])

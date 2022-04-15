@@ -27,6 +27,7 @@ public class Controller {
     private Stage stage;
     public FileChooser fileChooser = new FileChooser();
     private String outputString = "../output";
+    private String currentPath;
     private String pngPath;
     public String logName;
     private Wrapper wrapper;
@@ -116,7 +117,7 @@ public class Controller {
         }
         // output/log1/ output目录下的绝对路径
         String logAbsoluteDir = targetLog.getAbsolutePath().replace(fileName, "");
-        String currentPath = System.getProperty("user.dir");
+        this.currentPath = System.getProperty("user.dir");
 //        System.out.println(currentPath);
         Process process;
         // 读取日志，生成json
@@ -129,7 +130,7 @@ public class Controller {
 //              System.out.println(logAbsoluteDir);
 //              System.out.println(currentPath);
 //              System.out.println(cmdstr);
-                process = Runtime.getRuntime().exec(cmdstr, null, new File(currentPath));
+                process = Runtime.getRuntime().exec(cmdstr, null, new File(this.currentPath));
                 process.waitFor();
             } catch (Throwable e) {
                 e.printStackTrace();
@@ -583,9 +584,6 @@ public class Controller {
                 break;
         }
         wrapper.setOpParams(opParams);
-//        System.out.println(op);
-//        for (String s : opParams)
-//            System.out.println(s);
     }
 
     public void saveLoss() {
@@ -615,9 +613,6 @@ public class Controller {
 
         }
         wrapper.setLossParams(lossParams);
-//        System.out.println(loss);
-//        for (String s : lossParams)
-//            System.out.println(s);
     }
 
     public void saveLast() {
@@ -695,7 +690,7 @@ public class Controller {
         String fileName = nodeOutputString + "/sample.py";
         mkFile(fileName);
         String codeText = wrapper.toText();
-        System.out.println(codeText);
+//        System.out.println(codeText);
         try (FileWriter writer = new FileWriter(new File(fileName))) {
             writer.write(codeText);
         } catch (IOException e) {
@@ -703,8 +698,9 @@ public class Controller {
         }
         Process process;
         try {
-            String cmdstr = "python process.py";
-            File dir = new File("C:\\H\\Java codes\\JavaFX-GUI-demo\\model");
+            String cmdstr = "python process.py " + fileName;
+            File dir = new File(currentPath + "\\model");
+            System.out.println(currentPath + "\\model");
             process = Runtime.getRuntime().exec(cmdstr, null, dir);
             process.waitFor();
         } catch (InterruptedException e) {
