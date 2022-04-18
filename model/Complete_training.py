@@ -11,6 +11,7 @@ import re
 import random
 import time
 from math import sqrt
+import sys
 
 
 # #读json 划分整个流程树所有节点的输入输出数据集
@@ -112,7 +113,9 @@ def normalization(data):
         data[0, :, i]= (data[0, :, i] - np.min(data[0, :, i])) / _range
     return data
 
-
+# 外部传参 
+# 1日志，2节点
+args = sys.argv
 
 filename='data_solution1'
 #data_solution1     # 节点 1    2    3
@@ -141,7 +144,10 @@ record_n_output=[]
 data_recording=[]
 combin_recording=[]
 temp_record=[]
-# print(result_record)
+# print("result record:")
+# print(result_record) 各个节点函数
+# ['com.tct.testdata.AreaMain.main(java.lang.String[])', 'com.tct.testdata.AreaMain.parseArgs(java.lang.String[])', 
+# 'com.tct.testdata.AreaMain.getResult(int,double)', 'com.tct.testdata.AreaMain.normalPolygonArea(int,double)']
 ####### 对每个节点的数据进行获取
 # print("---------")
 for j,item in enumerate(result_record):
