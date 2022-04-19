@@ -33,6 +33,7 @@ public class Controller {
     private Wrapper wrapper;
     private Map<String, Integer> opMap = new HashMap<>();
     private Map<String, Integer> lossMap = new HashMap<>();
+    private Map<Integer, String> nodeMap = new HashMap<>();
 
 
     @FXML
@@ -149,6 +150,9 @@ public class Controller {
                 e.printStackTrace();
             }
         }
+        // 从dot文件获得节点id和它对应的节点
+        // 保存在map
+        this.nodeMap = getIdMap(dotPath);
     }
 
     @FXML
@@ -708,6 +712,41 @@ public class Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    // 从dot文件获得节点id和它对应的节点
+    private Map<Integer, String> getIdMap(String filePath) {
+//        File dot = new File("C:\\H\\Java_codes\\output\\solution12_small\\diagram.dot");
+        File dot = new File(filePath);
+        StringBuilder builder = new StringBuilder();
+        Map<Integer, String> map = new HashMap<>();
+        try {
+            FileInputStream in = new FileInputStream(dot);
+            int n = 0;
+            // n == -1 代表读到文件末尾
+            while (n != -1) {
+                n = in.read();
+                char ch = (char) n;
+                builder.append(ch);
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        String[] strs = builder.toString().split("\"");
+        for (int i = 0; i < strs.length; i++) {
+            if (i % 2 == 1) {
+                if (!strs[i].equals(" ----> ")) {
+                    String[] parts = strs[i].split("\n");
+                    String[] tmp = parts[0].split(" ");
+                    int node_id = Integer.parseInt(tmp[2].trim());
+                    map.put(node_id, parts[1]);
+                }
+            }
+        }
+//        for (Integer key : map.keySet()) {
+//            System.out.println(key + " " + map.get(key));
+//        }
+        return map;
     }
 
     private void mkFile(String fileName) {
