@@ -114,28 +114,22 @@ def normalization(data):
     return data
 
 # 外部传参 
-# 1日志，2节点
+# 1日志绝对路径，2训练的节点id
 args = sys.argv
 
-filename='data_solution1'
-#data_solution1     # 节点 1    2    3
-lrate_init=torch.tensor([0,1e-06,1e-07])
-lrate_max=torch.tensor([0,1e-08,1e-07])
+# filename='data_solution1'
+# output/log/data1.json
+# with open('./'+filename+'/data1.json','r',encoding='utf8')as fp:
+#     data = json.load(fp)
+# gkv = GetKeyValue(data)
+# result_record = gkv.search_key('nodeType')
+# print(result_record)
 
-temp = np.load('./'+filename+'/data_index.npy', allow_pickle=True)
-training_index = temp[0]
-testing_index=temp[1]
-# print('training_index:')
-# print(training_index)
-# print('testing_index:')
-# print(testing_index)
- 
-# 注意下：肖骞那边获取的json出现问题。新数据需要需要把父代的"nodeType"里的“Loop”修改为"Seq"
-with open('./'+filename+'/data1.json','r',encoding='utf8')as fp:
+# output/log/data1.json
+with open(args[1] + '\\data1.json','r',encoding='utf8')as fp:
     data = json.load(fp)
 gkv = GetKeyValue(data)
 result_record = gkv.search_key('nodeType')
-# print(result_record)
 
 cal_model=[]
 record=[]
@@ -148,12 +142,34 @@ temp_record=[]
 # print(result_record) 各个节点函数
 # ['com.tct.testdata.AreaMain.main(java.lang.String[])', 'com.tct.testdata.AreaMain.parseArgs(java.lang.String[])', 
 # 'com.tct.testdata.AreaMain.getResult(int,double)', 'com.tct.testdata.AreaMain.normalPolygonArea(int,double)']
-####### 对每个节点的数据进行获取
+
+####### 按顺序对每个节点的数据进行获取
 # print("---------")
+# file_path = "C:\H\Java_codes\output\solution12_small\diagram.dot"
+def read_node_names(file_path):
+    res = []
+    with open(file_path, 'r') as fin:
+        lines = fin.read()
+        line = lines.split("\"")
+        cnt = 0
+        for parts in line:
+            if cnt % 2 == 1 and parts != ' ----> ':
+                part = parts.split("\n")
+                res.append(part[1])
+            cnt += 1    
+    # print(res)
+    return res
+node_names = []
+# TODO 按顺序读入所有节点，数组下标即节点id
+dot_path = args[1] + '\\diagram.dot'
+node_names = read_node_names(dot_path)
+
 for j,item in enumerate(result_record):
     inp_data=[]
     oup_data=[]
-    with open('./'+filename+'/'+item+'.txt')as r1_data:
+    # output/log/items.txt
+    # with open('./'+filename+'/'+item+'.txt') as r1_data:
+    with open(args[1] + '\\' + item + '.txt') as r1_data:
         lines=r1_data.readlines()
         for i,line in enumerate(lines):
             t1,t2 = line.split("|", 1)
@@ -194,6 +210,23 @@ for j,item in enumerate(result_record):
     # temp_record 若为index，在下一个可训练的完整节点加入index对应数据作为输入
     # temp_record 若为空，需要堆积数据给下一个节点
 
+# 19960个输入和输出 data_recording[i][2], data_recording[i][3]
+# print(len(data_recording[0][3]))
+# 输入输出的总量
+total_number = len(data_recording[0][2])
+
+testing_number = int(total_number * 0.1)
+data_index=[i for i in range(total_number)]
+testing_index = random.sample(data_index, testing_number)  # 测试集indexes
+for i in testing_index:
+    data_index.remove(i)
+training_index = data_index  # 训练集indexes
+# a=[]
+# a.append(training_index)
+# a.append(testing_index)
+# np.save('./'+filename+'/data_index.npy', a)
+# print(training_index)
+
 def training(i, data_recording):
     # global data_recording
     temp_recording=[]
@@ -202,9 +235,9 @@ def training(i, data_recording):
     data_recording[i].append(data_recording[i][2][training_index])
     data_recording[i].append(data_recording[i][3][training_index])
     output_recording.append(data_recording[i][3])
-
-training(0, data_recording)
-print('--------train finished---------')
+# args[2] 节点id
+# training(args[2], data_recording)
+# print('--------train finished---------')
 
 def test_record(i, data_recording):
     # global data_recording
@@ -257,6 +290,6 @@ def test_record(i, data_recording):
     np.save('exp_result/records.npy', a3)
     print('------save in exp_result/records.npy------')
 
-test_record(0, data_recording)
+# test_record(args[2], data_recording)
 
 
