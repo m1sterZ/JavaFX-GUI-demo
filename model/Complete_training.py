@@ -2,7 +2,6 @@ import numpy
 import torch
 import torch.nn as nn
 import numpy as np
-import sample as sp
 import matplotlib.pyplot as plt
 import math
 import json
@@ -11,8 +10,17 @@ import re
 import random
 import time
 from math import sqrt
+
 import sys
 
+''' 外部传参 
+    args[1]日志绝对路径 output/log
+    args[2]训练的节点id 
+'''
+args = sys.argv
+# output/log/node
+sys.path.append(args[1] + '\\node' + args[2])
+import sample as sp
 
 # #读json 划分整个流程树所有节点的输入输出数据集
 class GetKeyValue(object):
@@ -41,7 +49,7 @@ class GetKeyValue(object):
                     if json_object[k] != "Seq":
                         self.result_list.append(json_object["label"])
                     # 只有这个部分需要增加搜索子树的按钮，搜索子树的目的是print里面的子代，若子树的某父节点是循环或其他逻辑节点，则停止搜索这个子树
-                    n= "children"
+                    n = "children"
                     # print(json_object[n])
                     # print(type(json_object[n]))
                     if isinstance(json_object[n], dict):
@@ -72,14 +80,16 @@ def EuclideanDistance(x, y):
     dis = x2 + y2 - 2 * xy
     return dis
 
+'''
 def testfunc(data_recording, x_temp):
     x = torch.tensor(x_temp).float().squeeze(0)
     temp = data_recording  #获取第i个方法的计算模型/中心点
     # print('temp[0]')
     # print(temp[0])
     model_and_feature = temp[0]
-    model_list=[]
-    model_feature=[]
+    print('model_and_feature', model_and_feature)
+    model_list = []
+    model_feature = []
     for j in range(len(model_and_feature)):
         model_list.append(model_and_feature[j][1])
         model_feature.append(model_and_feature[j][0])
@@ -88,10 +98,11 @@ def testfunc(data_recording, x_temp):
     for i in range(len(model_feature)):
         temp[i,:] = torch.from_numpy(model_feature[i])
     model_feature = np.array(temp)
-    # print('model_feature shape', np.shape(model_feature))
-    # print('sample shape', np.shape(x_temp))
-    dis=EuclideanDistance(x_temp,model_feature)
-    # print('dis shape',np.shape(dis))
+    print('model_feature shape', np.shape(model_feature))
+    print('sample shape', np.shape(x_temp))
+    dis = EuclideanDistance(x_temp, model_feature)
+    print('dis shape',np.shape(dis))
+    print('dis', dis) 
     dis[np.isnan(dis)] = np.nanmax(dis)
     y_pre = []
     print('model_feature', model_feature)
@@ -103,8 +114,28 @@ def testfunc(data_recording, x_temp):
     y_pre_new = np.zeros((len(y_pre),len(y_pre[0])))
     for j in range(len(y_pre)):
         y_pre_new[j] = np.array(y_pre[j].detach().numpy())
+    print('y_pre_new', y_pre_new)
     return y_pre_new
+'''
 
+# bp
+def testfunc(data_recording, x_temp):
+    # print('data_recording', data_recording[0][0][1])
+    # print('x_temp', x_temp)
+    data_recording = data_recording[0][0][1]
+    x = torch.tensor(x_temp).float().squeeze(0)
+    print('x', x)
+    # y_pre_new = data_recording(x)
+    y_pre=[]
+    for j in range(len(x_temp)):
+        print(x[j])
+        y_pre.append(data_recording(x[j]))
+    print('y_pre', y_pre)
+    y_pre_new = np.zeros((len(y_pre),len(y_pre[0])))
+    for j in range(len(y_pre)):
+        y_pre_new[j] = np.array(y_pre[j].detach().numpy())
+    print('y_pre_new', y_pre_new)
+    return y_pre_new
 
 def normalization(data):
     dimension=np.size(data)/np.size(data,1)
@@ -113,9 +144,6 @@ def normalization(data):
         data[0, :, i]= (data[0, :, i] - np.min(data[0, :, i])) / _range
     return data
 
-# 外部传参 
-# 1日志绝对路径，2训练的节点id
-args = sys.argv
 
 # filename='data_solution1'
 # output/log/data1.json
@@ -129,7 +157,7 @@ args = sys.argv
 with open(args[1] + '\\data1.json','r',encoding='utf8')as fp:
     data = json.load(fp)
 gkv = GetKeyValue(data)
-result_record = gkv.search_key('nodeType')
+# result_record = gkv.search_key('nodeType')
 
 cal_model=[]
 record=[]
@@ -139,7 +167,7 @@ data_recording=[]
 combin_recording=[]
 temp_record=[]
 # print("result record:")
-# print(result_record) 各个节点函数
+# print(result_record) # 各个节点函数
 # ['com.tct.testdata.AreaMain.main(java.lang.String[])', 'com.tct.testdata.AreaMain.parseArgs(java.lang.String[])', 
 # 'com.tct.testdata.AreaMain.getResult(int,double)', 'com.tct.testdata.AreaMain.normalPolygonArea(int,double)']
 
@@ -160,11 +188,12 @@ def read_node_names(file_path):
     # print(res)
     return res
 node_names = []
-# TODO 按顺序读入所有节点，数组下标即节点id
+# 按顺序读入所有节点，数组下标即节点id
 dot_path = args[1] + '\\diagram.dot'
 node_names = read_node_names(dot_path)
+# print(node_names)
 
-for j,item in enumerate(result_record):
+for j,item in enumerate(node_names):
     inp_data=[]
     oup_data=[]
     # output/log/items.txt
@@ -214,6 +243,7 @@ for j,item in enumerate(result_record):
 # print(len(data_recording[0][3]))
 # 输入输出的总量
 total_number = len(data_recording[0][2])
+print(total_number)
 
 testing_number = int(total_number * 0.1)
 data_index=[i for i in range(total_number)]
@@ -236,25 +266,26 @@ def training(i, data_recording):
     data_recording[i].append(data_recording[i][3][training_index])
     output_recording.append(data_recording[i][3])
 # args[2] 节点id
-# training(args[2], data_recording)
-# print('--------train finished---------')
+training(int(args[2]), data_recording)
+print('--------train finished---------')
+# print(data_recording[1][4])
 
 def test_record(i, data_recording):
     # global data_recording
     x_loss = []
     x_dis_loss = []
-    x_temp = data_recording[len(data_recording)-1][2][testing_index]
-    y_temp = data_recording[len(data_recording)-1][3][testing_index]
+    # x_temp = data_recording[len(data_recording)-1][2][testing_index]
+    x_temp = data_recording[i][2][testing_index]
+    # y_temp = data_recording[len(data_recording)-1][3][testing_index]
+    y_temp = data_recording[i][3][testing_index]
     y = torch.tensor(y_temp).float()
     testing_pararecording = []
     testing_outputrecording = []
-    # print('x_temp:')
-    # print(x_temp)
     # print(data_recording[i][4])
     # print('x_temp:')
     # print(x_temp)
-    y_pre = testfunc(data_recording[i][4],x_temp)  #模型+输入
-    # print(len(y[0]))
+    y_pre = testfunc(data_recording[i][4], x_temp)  #模型+输入
+    # print(y_pre)
     # print(len(y_pre[0]))
     data_recording[i].append(y_pre)
     testing_outputrecording.append(y_pre)
@@ -287,9 +318,11 @@ def test_record(i, data_recording):
     a3.append(x_dis_loss) #误差
     # res_file = open('out.txt', 'a')
     # print(a3, file = res_file)
-    np.save('exp_result/records.npy', a3)
-    print('------save in exp_result/records.npy------')
+    np.save(args[1] + '\\node' + args[2] + '\\exp_result.npy', a3)
+    # print('a3:')
+    # print(a3)
+    print('------save in exp_result.npy------')
 
-# test_record(args[2], data_recording)
+test_record(int(args[2]), data_recording)
 
 

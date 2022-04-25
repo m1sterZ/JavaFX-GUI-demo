@@ -85,9 +85,10 @@ public class Controller {
     public Button saveSetting;
     public Button generate;
     public Tab imageTab;
-    public HBox hBox;
     public ImageView imageView;
     public Tab reportTab;
+    public Button trainbt;
+    public Button testbt;
 
     /**
      * 所有文件目录不能带有空格！！！
@@ -101,7 +102,7 @@ public class Controller {
         // 输入日志的绝对路径
         String logPath = file.getAbsolutePath();
         String[] strs = fileName.split("\\.");
-        logName = strs[0];
+        this.logName = strs[0];
         String logDir = outputString + "/" + logName;
         File logDirFile = new File(logDir);
         if (!logDirFile.exists()) {
@@ -712,6 +713,41 @@ public class Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        trainbt.setDisable(false);
+    }
+
+    @FXML
+    public void trainModel() {
+        Process process;
+        try {
+            String logDir = outputString + "/" + logName;
+            File logDirFile = new File(logDir);
+            String logAbsolutePath = logDirFile.getAbsolutePath();
+            File dir = new File(currentPath + "\\model");
+            String cmdstr = "python Complete_Training.py" + logAbsolutePath + " " + wrapper.getNodeId();
+            process = Runtime.getRuntime().exec(cmdstr, null, dir);
+            process.waitFor();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        testbt.setDisable(false);
+    }
+
+    @FXML
+    public void testModel() {
+        Process process;
+        try {
+            String logDir = outputString + "/" + logName;
+            File logDirFile = new File(logDir);
+            String logAbsolutePath = logDirFile.getAbsolutePath();
+            File dir = new File(currentPath + "\\model");
+            String cmdstr = "python Complete_Testing.py" + logAbsolutePath + " " + wrapper.getNodeId();
+            process = Runtime.getRuntime().exec(cmdstr, null, dir);
+            process.waitFor();
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 
     // 从dot文件获得节点id和它对应的节点
@@ -791,6 +827,8 @@ public class Controller {
         lossPane.setVisible(false);
         lastPane.setVisible(false);
         generate.setDisable(true);
+        trainbt.setDisable(true);
+        testbt.setDisable(true);
         this.stage = primaryStage;
 
         File outputDir = new File(outputString);

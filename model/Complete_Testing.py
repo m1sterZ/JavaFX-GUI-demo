@@ -11,6 +11,7 @@ import re
 import random
 from math import sqrt
 import scipy.stats as stats
+import sys
 
 
 def indexes_cal(target,prediction):
@@ -36,7 +37,12 @@ def indexes_cal(target,prediction):
 
 ## 统计结果
 
-model_recording=np.load('exp_result/records.npy', allow_pickle=True)
+# 外部传参 args[0]本文件名 args[1]是节点的exp_result.npy绝对路径
+# args[1] C:\H\Java_codes\output\solution12_small\node1
+args = sys.argv
+file_path = args[1]
+model_recording = np.load(file_path + '\\exp_result.npy', allow_pickle=True)
+print(model_recording)
 #[data_recording,training_index,testing_index,a5_target,a5_pridiction,x_dis_loss]
 model_loss=model_recording[2]
 model_indexes=[]
