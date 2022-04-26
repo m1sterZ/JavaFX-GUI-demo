@@ -124,13 +124,14 @@ def testfunc(data_recording, x_temp):
     # print('x_temp', x_temp)
     data_recording = data_recording[0][0][1]
     x = torch.tensor(x_temp).float().squeeze(0)
-    print('x', x)
+    print('input size', len(x[1,:]))
+    # print('x', x)
     # y_pre_new = data_recording(x)
     y_pre=[]
     for j in range(len(x_temp)):
-        print(x[j])
+        # print(x[j])
         y_pre.append(data_recording(x[j]))
-    print('y_pre', y_pre)
+    # print('y_pre', y_pre) # 空值？
     y_pre_new = np.zeros((len(y_pre),len(y_pre[0])))
     for j in range(len(y_pre)):
         y_pre_new[j] = np.array(y_pre[j].detach().numpy())
@@ -203,7 +204,7 @@ for j,item in enumerate(node_names):
         for i,line in enumerate(lines):
             t1,t2 = line.split("|", 1)
             num1= np.array(re.findall(r"\d+\.?\d*",t1))
-            num2= np.array(re.findall(r"\d+\.?\d*",t2))
+            num2= np.array(re.findall(r"\d+\.?\d*",t2)) # 至少1个数字 可选一个点 n个数字 任意整数或小数  
             nnum1 = np.zeros(len(num1))
             nnum2 = np.zeros(len(num2))
             for k1 in range(len(num1)):
@@ -239,9 +240,8 @@ for j,item in enumerate(node_names):
     # temp_record 若为index，在下一个可训练的完整节点加入index对应数据作为输入
     # temp_record 若为空，需要堆积数据给下一个节点
 
-# 19960个输入和输出 data_recording[i][2], data_recording[i][3]
+# 输入和输出 data_recording[i][2], data_recording[i][3]
 # print(len(data_recording[0][3]))
-# 输入输出的总量
 total_number = len(data_recording[0][2])
 print(total_number)
 
@@ -261,6 +261,8 @@ def training(i, data_recording):
     # global data_recording
     temp_recording=[]
     output_recording=[]
+    # print('data_recording output', data_recording[i][3][training_index])
+    print('res', sp.train(data_recording[i][2][training_index], data_recording[i][3][training_index]))
     data_recording[i].append(sp.train(data_recording[i][2][training_index], data_recording[i][3][training_index]))
     data_recording[i].append(data_recording[i][2][training_index])
     data_recording[i].append(data_recording[i][3][training_index])
@@ -319,8 +321,7 @@ def test_record(i, data_recording):
     # res_file = open('out.txt', 'a')
     # print(a3, file = res_file)
     np.save(args[1] + '\\node' + args[2] + '\\exp_result.npy', a3)
-    # print('a3:')
-    # print(a3)
+    print('a3:', a3)
     print('------save in exp_result.npy------')
 
 test_record(int(args[2]), data_recording)

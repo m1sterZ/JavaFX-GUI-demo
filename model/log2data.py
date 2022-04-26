@@ -93,7 +93,7 @@ def writeIOdata(dirname, filename, datadir):
     # 创建新文件存放输入输出数据
     IOdataname = datadir + filename.split('_')[0]+'.txt'
     # print(IOdataname)
-    file = open(IOdataname, 'a')
+    file = open(IOdataname, 'a+')
     while logevent != '':
         eventType = logevent.split('@@|')[0]
         data = logevent.split('@@|')[1]
