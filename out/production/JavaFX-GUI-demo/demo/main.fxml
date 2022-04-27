@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -18,7 +19,7 @@
   <center>
       <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <tabs>
-            <Tab fx:id="main" closable="false" text="main">
+            <Tab fx:id="main" closable="false" text="参数设置">
                <content>
                 <AnchorPane fx:id="ap" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="733.0" prefWidth="785.0">
                      <children>
@@ -27,8 +28,9 @@
                               <Font name="Consolas" size="16.0" />
                            </font>
                         </Label>
-                        <Button fx:id="readbt" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#readFile" text="read" />
-                        <ComboBox fx:id="netcb" layoutX="252.0" layoutY="47.0" onAction="#selectNet" prefWidth="150.0" promptText="net">
+                        <TextField fx:id="nodeIdField" layoutX="83.0" layoutY="47.0" prefHeight="23.0" prefWidth="144.0" />
+                        <Button fx:id="readbt" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#readFile" text="读取日志文件" />
+                        <ComboBox fx:id="netcb" layoutX="252.0" layoutY="47.0" onAction="#selectNet" prefWidth="150.0" promptText="网络类型">
                            <items>
                               <FXCollections fx:factory="observableArrayList">
                                  <String fx:value="BPNN" />
@@ -37,7 +39,7 @@
                               </FXCollections>
                            </items>
                         </ComboBox>
-                        <ComboBox fx:id="levelcb" layoutX="427.0" layoutY="47.0" onAction="#selectLevel" prefWidth="150.0" promptText="level">
+                        <ComboBox fx:id="levelcb" layoutX="427.0" layoutY="47.0" onAction="#selectLevel" prefWidth="150.0" promptText="网络层数">
                            <items>
                               <FXCollections fx:factory="observableArrayList">
                                  <String fx:value="1" />
@@ -205,14 +207,14 @@
                                     </FXCollections>
                                  </items>
                               </ComboBox>
-                              <Label text="Activators:">
+                              <Label text="激活函数:">
                                  <font>
                                     <Font name="Consolas" size="14.0" />
                                  </font>
                               </Label>
                            </children>
                         </AnchorPane>
-                        <Label layoutX="14.0" layoutY="196.0" text="optimizer:">
+                        <Label layoutX="14.0" layoutY="196.0" text="优化器：">
                            <font>
                               <Font name="Consolas" size="16.0" />
                            </font>
@@ -271,12 +273,12 @@
                               <TextField fx:id="opParam6" layoutX="425.0" layoutY="71.0" />
                            </children>
                         </AnchorPane>
-                        <Label layoutX="12.0" layoutY="329.0" text="loss function:">
+                        <Label layoutX="12.0" layoutY="329.0" text="损失函数：">
                            <font>
                               <Font name="Consolas" size="16.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="losscb" layoutX="144.0" layoutY="326.0" onAction="#selectLoss" prefWidth="150.0" promptText="loss function">
+                        <ComboBox fx:id="losscb" layoutX="111.0" layoutY="327.0" onAction="#selectLoss" prefWidth="150.0" promptText="loss function">
                            <items>
                               <FXCollections fx:factory="observableArrayList">
                                  <String fx:value="BCELoss" />
@@ -325,34 +327,36 @@
                         </AnchorPane>
                         <AnchorPane fx:id="lastPane" layoutX="15.0" layoutY="458.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="110.0" prefWidth="630.0">
                            <children>
-                              <Text layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="epoch:" wrappingWidth="60.0">
+                              <Text layoutX="-1.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="迭代次数:" wrappingWidth="106.0">
                                  <font>
                                     <Font name="Consolas" size="15.0" />
                                  </font>
                               </Text>
-                              <TextField fx:id="epochField" layoutX="60.0" layoutY="10.0" />
-                              <Text layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="input dimension:" wrappingWidth="140.0">
+                              <TextField fx:id="epochField" layoutX="108.0" layoutY="14.0" />
+                              <Text layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="输入维度:" wrappingWidth="104.0">
                                  <font>
                                     <Font name="Consolas" size="15.0" />
                                  </font>
                               </Text>
-                              <TextField fx:id="inDiField" layoutX="141.0" layoutY="42.0" prefHeight="27.0" prefWidth="275.0" />
-                              <Text layoutX="-1.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="output dimension:" wrappingWidth="141.0791015625">
+                              <TextField fx:id="inDiField" layoutX="108.0" layoutY="42.0" prefHeight="27.0" prefWidth="275.0" />
+                              <Text layoutX="-1.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="输出维度：" wrappingWidth="106.0">
                                  <font>
                                     <Font name="Consolas" size="15.0" />
                                  </font>
                               </Text>
-                              <TextField fx:id="outDiField" layoutX="141.0" layoutY="75.0" prefHeight="27.0" prefWidth="275.0" />
+                              <TextField fx:id="outDiField" layoutX="108.0" layoutY="75.0" prefHeight="27.0" prefWidth="275.0" />
                            </children>
                         </AnchorPane>
-                        <Button fx:id="saveSetting" layoutX="15.0" layoutY="577.0" mnemonicParsing="false" onAction="#saveAll" text="save settings" />
-                        <Button fx:id="generate" layoutX="144.0" layoutY="577.0" mnemonicParsing="false" onAction="#generateCode" text="generate model" />
-                        <TextField fx:id="nodeIdField" layoutX="83.0" layoutY="47.0" prefHeight="23.0" prefWidth="144.0" />
+                        <Button fx:id="saveSetting" layoutX="15.0" layoutY="577.0" mnemonicParsing="false" onAction="#saveAll" text="保存参数设置" />
+                        <Button fx:id="generate" layoutX="144.0" layoutY="577.0" mnemonicParsing="false" onAction="#generateCode" text="生成模型" />
+                        <Button fx:id="trainbt" layoutX="266.0" layoutY="577.0" mnemonicParsing="false" onAction="#trainModel" text="训练模型" />
+                        <Button fx:id="testbt" layoutX="370.0" layoutY="577.0" mnemonicParsing="false" onAction="#testModel" text="测试模型" />
+                        <TextArea fx:id="infoArea" editable="false" layoutX="14.0" layoutY="626.0" prefHeight="100.0" prefWidth="700.0" wrapText="true" />
                      </children>
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab fx:id="imageTab" closable="false" onSelectionChanged="#showImage" text="image">
+            <Tab fx:id="imageTab" closable="false" onSelectionChanged="#showImage" text="流程树图像">
                <content>
                   <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" prefWidth="800.0">
                      <center>
@@ -361,10 +365,14 @@
                   </BorderPane>
                </content>
             </Tab>
-            <Tab fx:id="reportTab" closable="false" text="report">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-              </content>
+            <Tab fx:id="reportTab" closable="false" onSelectionChanged="#showReport" text="测试结果报告">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <center>
+                        <TextArea fx:id="reportArea" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                     </center>
+                  </BorderPane>
+               </content>
             </Tab>
          </tabs>
       </TabPane>

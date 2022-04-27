@@ -135,7 +135,7 @@ def testfunc(data_recording, x_temp):
     y_pre_new = np.zeros((len(y_pre),len(y_pre[0])))
     for j in range(len(y_pre)):
         y_pre_new[j] = np.array(y_pre[j].detach().numpy())
-    print('y_pre_new', y_pre_new)
+    # print('y_pre_new', y_pre_new)
     return y_pre_new
 
 def normalization(data):

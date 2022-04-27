@@ -13,14 +13,14 @@ import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.NumberFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class Controller {
@@ -29,7 +29,8 @@ public class Controller {
     private String outputString = "../output";
     private String currentPath;
     private String pngPath;
-    public String logName;
+    private String logName;
+    private String logAbsoluteDir;
     private Wrapper wrapper;
     private Map<String, Integer> opMap = new HashMap<>();
     private Map<String, Integer> lossMap = new HashMap<>();
@@ -84,11 +85,14 @@ public class Controller {
     public TextField outDiField;
     public Button saveSetting;
     public Button generate;
+    public TextArea infoArea;
+
     public Tab imageTab;
     public ImageView imageView;
     public Tab reportTab;
     public Button trainbt;
     public Button testbt;
+    public TextArea reportArea;
 
     /**
      * 所有文件目录不能带有空格！！！
@@ -117,8 +121,14 @@ public class Controller {
                 e.printStackTrace();
             }
         }
+        LocalTime time = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String infoText = infoArea.getText();
+        String currentTime = time.format(formatter);
+        infoText += currentTime + " 成功读取日志" + logName + "\n";
+        infoArea.setText(infoText);
         // output/log1/ output目录下的绝对路径
-        String logAbsoluteDir = targetLog.getAbsolutePath().replace(fileName, "");
+        this.logAbsoluteDir = targetLog.getAbsolutePath().replace(fileName, "");
         this.currentPath = System.getProperty("user.dir");
 //        System.out.println(currentPath);
         Process process;
@@ -131,12 +141,25 @@ public class Controller {
                 String cmdstr = "java -jar ProgramCallLogic_Code.jar " + logAbsoluteDir + " " + logAbsoluteDir;
 //              System.out.println(logAbsoluteDir);
 //              System.out.println(currentPath);
-//              System.out.println(cmdstr);
                 process = Runtime.getRuntime().exec(cmdstr, null, new File(this.currentPath));
                 process.waitFor();
             } catch (Throwable e) {
                 e.printStackTrace();
             }
+        }
+        time = LocalTime.now();
+        currentTime = time.format(formatter);
+        infoText = infoArea.getText();
+        infoText += currentTime + " 由日志生成json文件\n";
+        infoArea.setText(infoText);
+        // 从整棵流程树的txt生成每一个节点的txt
+        String txtPath = logAbsoluteDir + fileName;
+        try {
+            String cmdstr = "python log2data.py " + txtPath;
+            process = Runtime.getRuntime().exec(cmdstr, null, new File(currentPath + "\\model"));
+            process.waitFor();
+        } catch (Throwable e) {
+            e.printStackTrace();
         }
         // json生成流程树png图像
         String dotPath = logAbsoluteDir + "diagram.dot";
@@ -151,6 +174,11 @@ public class Controller {
                 e.printStackTrace();
             }
         }
+        time = LocalTime.now();
+        currentTime = time.format(formatter);
+        infoText = infoArea.getText();
+        infoText += currentTime + " 成功生成流程树图形，点击流程树图像tab查看\n";
+        infoArea.setText(infoText);
         // 从dot文件获得节点id和它对应的节点
         // 保存在map
         this.nodeMap = getIdMap(dotPath);
@@ -540,6 +568,13 @@ public class Controller {
             saveLoss();
             saveLast();
             generate.setDisable(false);
+
+            LocalTime time = LocalTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            String infoText = infoArea.getText();
+            String currentTime = time.format(formatter);
+            infoText += currentTime + " 成功保存参数设置\n";
+            infoArea.setText(infoText);
         }
     }
 
@@ -714,6 +749,12 @@ public class Controller {
             e.printStackTrace();
         }
 
+        LocalTime time = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String infoText = infoArea.getText();
+        String currentTime = time.format(formatter);
+        infoText += currentTime + " 成功生成模型\n";
+        infoArea.setText(infoText);
         trainbt.setDisable(false);
     }
 
@@ -725,9 +766,15 @@ public class Controller {
             File logDirFile = new File(logDir);
             String logAbsolutePath = logDirFile.getAbsolutePath();
             File dir = new File(currentPath + "\\model");
-            String cmdstr = "python Complete_Training.py" + logAbsolutePath + " " + wrapper.getNodeId();
+            String cmdstr = "python Complete_Training.py " + logAbsolutePath + " " + wrapper.getNodeId();
             process = Runtime.getRuntime().exec(cmdstr, null, dir);
             process.waitFor();
+            LocalTime time = LocalTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            String infoText = infoArea.getText();
+            String currentTime = time.format(formatter);
+            infoText += currentTime + " 已训练模型\n";
+            infoArea.setText(infoText);
         } catch (Throwable e) {
             e.printStackTrace();
         }
@@ -742,12 +789,19 @@ public class Controller {
             File logDirFile = new File(logDir);
             String logAbsolutePath = logDirFile.getAbsolutePath();
             File dir = new File(currentPath + "\\model");
-            String cmdstr = "python Complete_Testing.py" + logAbsolutePath + " " + wrapper.getNodeId();
+            String cmdstr = "python Complete_Testing.py " + logAbsolutePath + "\\node" + wrapper.getNodeId();
             process = Runtime.getRuntime().exec(cmdstr, null, dir);
             process.waitFor();
+            LocalTime time = LocalTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            String infoText = infoArea.getText();
+            String currentTime = time.format(formatter);
+            infoText += currentTime + " 已测试模型，点击测试报告tab查看\n";
+            infoArea.setText(infoText);
         } catch (Throwable e) {
             e.printStackTrace();
         }
+
     }
 
     // 从dot文件获得节点id和它对应的节点
@@ -841,7 +895,7 @@ public class Controller {
 
     @FXML
     public void showImage() {
-        if (new File(pngPath).exists()) {
+        if (pngPath != null && new File(pngPath).exists()) {
             try {
                 FileInputStream input = new FileInputStream(pngPath);
                 Image image = new Image(input);
@@ -852,7 +906,27 @@ public class Controller {
                 e.printStackTrace();
             }
         }
+    }
 
+    @FXML
+    public void showReport() {
+        String nodeDir = logAbsoluteDir + "node" + wrapper.getNodeId();
+        String reportDir = nodeDir + "\\report.txt";
+        File reportFile = new File(reportDir);
+        if (reportFile.exists()) {
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(reportFile));
+                String line;
+                StringBuilder reportText = new StringBuilder("");
+                while ((line = br.readLine()) != null) {
+                    reportText.append(line);
+                    reportText.append("\n");
+                }
+                reportArea.setText(reportText.toString());
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

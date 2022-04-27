@@ -83,6 +83,7 @@ def getIOdata(dirname):
 
     for filename in os.listdir(dirname + 'cache\\'):
         # if not os.path.isdir(os.path.join(dirname + './cache/', filename)):  # 去掉的话会有文件夹的目录被打印
+        # print('getIOdata', filename)
         writeIOdata(dirname, filename, datadir)
 
 def writeIOdata(dirname, filename, datadir):
@@ -92,11 +93,11 @@ def writeIOdata(dirname, filename, datadir):
     logevent = linecache.getline(logname, i)
     # 创建新文件存放输入输出数据
     IOdataname = datadir + filename.split('_')[0]+'.txt'
-    # print(IOdataname)
-    file = open(IOdataname, 'a+')
+    print(IOdataname)
+    file = open(IOdataname, 'w')
     while logevent != '':
         eventType = logevent.split('@@|')[0]
-        data = logevent.split('@@|')[1]
+        data = logevent.split('@@|')[1] 
         if eventType == 'START':
             stack.append(i)
         else:
