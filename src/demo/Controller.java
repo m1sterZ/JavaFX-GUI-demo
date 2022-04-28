@@ -1,13 +1,11 @@
 package demo;
 
-import com.sun.xml.internal.ws.util.StringUtils;
-import javafx.application.Platform;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Text;
@@ -16,9 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.NumberFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -26,7 +22,8 @@ import java.util.*;
 public class Controller {
     private Stage stage;
     public FileChooser fileChooser = new FileChooser();
-    private String outputString = "../output";
+//    private String outputString = "../output";
+    private String outputString = "../../output";
     private String currentPath;
     private String pngPath;
     private String logName;
@@ -177,7 +174,7 @@ public class Controller {
         time = LocalTime.now();
         currentTime = time.format(formatter);
         infoText = infoArea.getText();
-        infoText += currentTime + " 成功生成流程树图形，点击流程树图像tab查看\n";
+        infoText += currentTime + " 成功生成流程树图像，点击流程树图像tab查看\n";
         infoArea.setText(infoText);
         // 从dot文件获得节点id和它对应的节点
         // 保存在map
@@ -551,7 +548,7 @@ public class Controller {
     public void saveAll() {
         Alert saveAlert = new Alert(
                 Alert.AlertType.CONFIRMATION,
-                "Save all settings?",
+                "保存参数后不可修改，是否确认保存？",
                 ButtonType.YES,
                 ButtonType.NO,
                 ButtonType.CANCEL
@@ -717,6 +714,13 @@ public class Controller {
     public void generateCode() {
         // 保存路径/output/log1/node1/....
 
+        LocalTime time = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String infoText = infoArea.getText();
+        String currentTime = time.format(formatter);
+        infoText += currentTime + " 正在生成模型......\n";
+        infoArea.setText(infoText);
+
         String logOutputString = outputString + "/" + logName;
         File logOutputDir = new File(logOutputString);
         if (!logOutputDir.exists()) {
@@ -749,17 +753,24 @@ public class Controller {
             e.printStackTrace();
         }
 
-        LocalTime time = LocalTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-        String infoText = infoArea.getText();
-        String currentTime = time.format(formatter);
+        infoText = infoArea.getText();
+        currentTime = time.format(formatter);
         infoText += currentTime + " 成功生成模型\n";
         infoArea.setText(infoText);
+
         trainbt.setDisable(false);
     }
 
     @FXML
     public void trainModel() {
+
+        LocalTime time = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String infoText = infoArea.getText();
+        String currentTime = time.format(formatter);
+        infoText += currentTime + " 正在训练模型......\n";
+        infoArea.setText(infoText);
+
         Process process;
         try {
             String logDir = outputString + "/" + logName;
@@ -769,10 +780,9 @@ public class Controller {
             String cmdstr = "python Complete_Training.py " + logAbsolutePath + " " + wrapper.getNodeId();
             process = Runtime.getRuntime().exec(cmdstr, null, dir);
             process.waitFor();
-            LocalTime time = LocalTime.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-            String infoText = infoArea.getText();
-            String currentTime = time.format(formatter);
+
+            infoText = infoArea.getText();
+            currentTime = time.format(formatter);
             infoText += currentTime + " 已训练模型\n";
             infoArea.setText(infoText);
         } catch (Throwable e) {
@@ -784,6 +794,13 @@ public class Controller {
     @FXML
     public void testModel() {
         Process process;
+        LocalTime time = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String infoText = infoArea.getText();
+        String currentTime = time.format(formatter);
+        infoText += currentTime + " 正在测试模型......\n";
+        infoArea.setText(infoText);
+
         try {
             String logDir = outputString + "/" + logName;
             File logDirFile = new File(logDir);
@@ -792,10 +809,9 @@ public class Controller {
             String cmdstr = "python Complete_Testing.py " + logAbsolutePath + "\\node" + wrapper.getNodeId();
             process = Runtime.getRuntime().exec(cmdstr, null, dir);
             process.waitFor();
-            LocalTime time = LocalTime.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-            String infoText = infoArea.getText();
-            String currentTime = time.format(formatter);
+
+            infoText = infoArea.getText();
+            currentTime = time.format(formatter);
             infoText += currentTime + " 已测试模型，点击测试报告tab查看\n";
             infoArea.setText(infoText);
         } catch (Throwable e) {
@@ -915,7 +931,8 @@ public class Controller {
         File reportFile = new File(reportDir);
         if (reportFile.exists()) {
             try {
-                BufferedReader br = new BufferedReader(new FileReader(reportFile));
+                InputStreamReader isr = new InputStreamReader(new FileInputStream(reportFile), "UTF-8");
+                BufferedReader br = new BufferedReader(isr);
                 String line;
                 StringBuilder reportText = new StringBuilder("");
                 while ((line = br.readLine()) != null) {
