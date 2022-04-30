@@ -124,7 +124,7 @@ def testfunc(data_recording, x_temp):
     # print('x_temp', x_temp)
     data_recording = data_recording[0][0][1]
     x = torch.tensor(x_temp).float().squeeze(0)
-    print('input size', len(x[1,:]))
+    # print('input size', len(x[1,:]))
     # print('x', x)
     # y_pre_new = data_recording(x)
     y_pre=[]
@@ -243,7 +243,7 @@ for j,item in enumerate(node_names):
 # 输入和输出 data_recording[i][2], data_recording[i][3]
 # print(len(data_recording[0][3]))
 total_number = len(data_recording[0][2])
-print(total_number)
+# print(total_number)
 
 testing_number = int(total_number * 0.1)
 data_index=[i for i in range(total_number)]
@@ -262,7 +262,7 @@ def training(i, data_recording):
     temp_recording=[]
     output_recording=[]
     # print('data_recording output', data_recording[i][3][training_index])
-    print('res', sp.train(data_recording[i][2][training_index], data_recording[i][3][training_index]))
+    # print('res', sp.train(data_recording[i][2][training_index], data_recording[i][3][training_index]))
     data_recording[i].append(sp.train(data_recording[i][2][training_index], data_recording[i][3][training_index]))
     data_recording[i].append(data_recording[i][2][training_index])
     data_recording[i].append(data_recording[i][3][training_index])
@@ -321,7 +321,7 @@ def test_record(i, data_recording):
     # res_file = open('out.txt', 'a')
     # print(a3, file = res_file)
     np.save(args[1] + '\\node' + args[2] + '\\exp_result.npy', a3)
-    print('a3:', a3)
+    # print('a3:', a3)
     print('------save in exp_result.npy------')
 
 test_record(int(args[2]), data_recording)

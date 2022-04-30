@@ -22,8 +22,8 @@ import java.util.*;
 public class Controller {
     private Stage stage;
     public FileChooser fileChooser = new FileChooser();
-//    private String outputString = "../output";
-    private String outputString = "../../output";
+    private String outputString = "../output";
+//    private String outputString = "../../output";
     private String currentPath;
     private String pngPath;
     private String logName;
@@ -742,9 +742,10 @@ public class Controller {
         }
         Process process;
         try {
-            String cmdstr = "python process.py " + fileName;
+            String modelAbsolutePath = new File(fileName).getAbsolutePath();
+            String cmdstr = "python process.py " + modelAbsolutePath;
             File dir = new File(currentPath + "\\model");
-            System.out.println(currentPath + "\\model");
+//            System.out.println(cmdstr);
             process = Runtime.getRuntime().exec(cmdstr, null, dir);
             process.waitFor();
         } catch (InterruptedException e) {
