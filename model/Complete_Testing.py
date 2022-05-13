@@ -58,7 +58,7 @@ stat,p=stats.wilcoxon(y_target[0][0],y_pridiction[0][0], correction=True, altern
 file = open(file_path + '\\report.txt', 'w', encoding='utf8')
 
 for i in range(len(model_loss)):
-    squaredError,absError,targetDeviation = indexes_cal(y_target[i][0], y_pridiction[i][0])
+    squaredError, absError, targetDeviation = indexes_cal(y_target[i][0], y_pridiction[i][0])
     squaredError_avg.append(squaredError)
     absError_avg.append(absError)
     targetDeviation_avg.append(targetDeviation)
@@ -70,6 +70,12 @@ for i in range(len(model_loss)):
     print("MSE = ", sum(squaredError) / len(squaredError))  # 均方误差MSE
     print("RMSE = ", sqrt(sum(squaredError) / len(squaredError)))  # 均方根误差RMSE
     print("R^2 = ", 1-((sum(squaredError) / len(squaredError))/(sum(targetDeviation) / len(targetDeviation))))  # 重相关系数
+
+    average_value = np.mean(absError)
+    standard_error = stats.sem(absError)
+    left = average_value - standard_error * 1.96
+    right = average_value + standard_error * 1.96
+    print("95%置信度的置信区间 [", left, ", ", right, "]\n")
 
     file.write('第 ' + str(i) + ' 维预测结果对应分析指标:\n')
     file.write("MED = " + str(np.median(absError)) + '\n')
