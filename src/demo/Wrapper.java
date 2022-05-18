@@ -104,6 +104,22 @@ public class Wrapper {
         this.outDi = outDi;
     }
 
+    // check if all params are not null
+    public boolean allPrepared() {
+        if (this.nodeId == null) return false;
+        if (this.netName == null) return false;
+        if (this.activators == null) return false;
+        if (this.optimizer == null) return false;
+        if (this.lossFunc == null) return false;
+        if (this.opParams == null) return false;
+        if (this.lossParams == null) return false;
+        if (this.epoch <= 0) return false;
+        if (this.level <= 0) return false;
+        if (this.inDi == null) return false;
+        if (this.outDi == null) return false;
+        return true;
+    }
+
     public String formatActivator() {
         StringBuilder builder = new StringBuilder("");
         for (String s : this.getActivators()) {

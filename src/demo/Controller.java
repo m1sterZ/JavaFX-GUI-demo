@@ -564,7 +564,8 @@ public class Controller {
             saveOp();
             saveLoss();
             saveLast();
-            generate.setDisable(false);
+            if (wrapper.allPrepared())
+                generate.setDisable(false);
 
             LocalTime time = LocalTime.now();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -654,14 +655,14 @@ public class Controller {
 
     public void saveLast() {
         String epochstr = epochField.getText();
-        int e = isInt(epochstr, "epoch");
+        int e = isInt(epochstr);
         if (e > 0) wrapper.setEpoch(e);
         String[] inDimensions = inDiField.getText().split(",");
         String[] outDimensions = outDiField.getText().split(",");
         List<Integer> list = new ArrayList<>();
         for (String s : inDimensions) {
-            int res = isInt(s, "in_dimension");
-            //TODO handle invalid input
+            int res = isInt(s);
+
             if (res > Integer.MIN_VALUE) list.add(res);
         }
         int[] inArray = new int[wrapper.getLevel()];
@@ -672,7 +673,7 @@ public class Controller {
         list.clear();
         int[] outArray = new int[wrapper.getLevel()];
         for (String s : outDimensions) {
-            int res = isInt(s, "out_dimensions");
+            int res = isInt(s);
             if (res > Integer.MIN_VALUE) list.add(res);
         }
         for (int i = 0; i < list.size(); i++) outArray[i] = list.get(i);
@@ -681,7 +682,12 @@ public class Controller {
         //
     }
 
-    private int isInt(String str, String paraName) {
+    private void checkInput(String input) {
+        String tmp = input.replace(" ", "");
+
+    }
+
+    private int isInt(String str) {
         try {
             int res = Integer.parseInt(str);
             return res;
@@ -689,7 +695,7 @@ public class Controller {
             e.printStackTrace();
             Alert alert = new Alert(
                     Alert.AlertType.ERROR,
-                     paraName + " must be Integer",
+                     "input must be Integer",
                     ButtonType.OK
             );
             alert.showAndWait();
