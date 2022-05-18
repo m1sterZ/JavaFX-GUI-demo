@@ -657,34 +657,63 @@ public class Controller {
         String epochstr = epochField.getText();
         int e = isInt(epochstr);
         if (e > 0) wrapper.setEpoch(e);
-        String[] inDimensions = inDiField.getText().split(",");
-        String[] outDimensions = outDiField.getText().split(",");
-        List<Integer> list = new ArrayList<>();
-        for (String s : inDimensions) {
-            int res = isInt(s);
-
-            if (res > Integer.MIN_VALUE) list.add(res);
-        }
-        int[] inArray = new int[wrapper.getLevel()];
-        for (int i = 0; i < list.size(); i++) inArray[i] = list.get(i);
-        wrapper.setInDi(inArray);
-//        for (int i : tmpArray) System.out.println(i);
-        //
-        list.clear();
-        int[] outArray = new int[wrapper.getLevel()];
-        for (String s : outDimensions) {
-            int res = isInt(s);
-            if (res > Integer.MIN_VALUE) list.add(res);
-        }
-        for (int i = 0; i < list.size(); i++) outArray[i] = list.get(i);
-        wrapper.setOutDi(outArray);
-//        for (int i : tmpArray) System.out.println(i);
-        //
+        int[] inDi = checkInput(inDiField.getText());
+        int[] outDi = checkInput(outDiField.getText());
+        boolean flag = true;
+        if (inDi.length == wrapper.getLevel()) {
+            for (int n : inDi) {
+                if (n <= 0) flag = false;
+            }
+        } else flag = false;
+        if (flag) wrapper.setInDi(inDi);
+        if (outDi.length == wrapper.getLevel()) {
+            for (int n : outDi) {
+                if (n <= 0) flag = false;
+            }
+        } else flag = false;
+        if (flag) wrapper.setOutDi(outDi);
+//        String[] inDimensions = inDiField.getText().split(",");
+//        String[] outDimensions = outDiField.getText().split(",");
+//        List<Integer> list = new ArrayList<>();
+//        for (String s : inDimensions) {
+//            int res = isInt(s);
+//
+//            if (res > Integer.MIN_VALUE) list.add(res);
+//        }
+//        int[] inArray = new int[wrapper.getLevel()];
+//        for (int i = 0; i < list.size(); i++) inArray[i] = list.get(i);
+//        wrapper.setInDi(inArray);
+////        for (int i : tmpArray) System.out.println(i);
+//        //
+//        list.clear();
+//        int[] outArray = new int[wrapper.getLevel()];
+//        for (String s : outDimensions) {
+//            int res = isInt(s);
+//            if (res > Integer.MIN_VALUE) list.add(res);
+//        }
+//        for (int i = 0; i < list.size(); i++) outArray[i] = list.get(i);
+//        wrapper.setOutDi(outArray);
+////        for (int i : tmpArray) System.out.println(i);
+//        //
     }
 
-    private void checkInput(String input) {
+    private int[] checkInput(String input) {
         String tmp = input.replace(" ", "");
-
+        String[] nums = tmp.split(",");
+        int[] arr = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            int n = isInt(nums[i]);
+            if (n > 0) arr[i] = n;
+            else {
+                Alert alert = new Alert(
+                        Alert.AlertType.ERROR,
+                        "维度必须为大于0的int整型，以英文逗号隔开",
+                        ButtonType.OK
+                );
+                alert.showAndWait();
+            }
+        }
+        return arr;
     }
 
     private int isInt(String str) {
@@ -695,7 +724,7 @@ public class Controller {
             e.printStackTrace();
             Alert alert = new Alert(
                     Alert.AlertType.ERROR,
-                     "input must be Integer",
+                     "输入必须为int整型",
                     ButtonType.OK
             );
             alert.showAndWait();
