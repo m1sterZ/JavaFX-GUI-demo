@@ -76,6 +76,7 @@ for i in range(len(model_loss)):
     left = average_value - standard_error * 1.96
     right = average_value + standard_error * 1.96
     print("95%置信度的置信区间 [", left, ", ", right, "]\n")
+    
 
     file.write('第 ' + str(i) + ' 维预测结果对应分析指标:\n')
     file.write("MED = " + str(np.median(absError)) + '\n')
@@ -85,6 +86,7 @@ for i in range(len(model_loss)):
     file.write("MSE = " + str(sum(squaredError) / len(squaredError)) + '\n')
     file.write("RMSE = " + str(sqrt(sum(squaredError) / len(squaredError))) + '\n')
     file.write("R^2 = " + str(1-((sum(squaredError) / len(squaredError))/(sum(targetDeviation) / len(targetDeviation)))) + '\n')
+    file.write("95%置信度的置信区间 [" + str(left) + ", " + str(right) + "]\n")
 
     #误差分块
     # temp_abserror=absError
@@ -125,6 +127,7 @@ file.write("MAE = " + str(sum(absError) / len(absError)) + '\n')
 file.write("MSE = " + str(sum(squaredError) / len(squaredError)) + '\n')
 file.write("RMSE = " + str(sqrt(sum(squaredError) / len(squaredError))) + '\n')
 file.write("R^2 = " + str(1-((sum(squaredError) / len(squaredError))/(sum(targetDeviation) / len(targetDeviation)))) + '\n')
+file.write("----------------------END---------------------\n")
 
 # #误差分块
 # temp_abserror=absError

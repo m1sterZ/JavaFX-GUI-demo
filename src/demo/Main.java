@@ -13,7 +13,7 @@ public class Main extends Application {
         Parent root = loader.load();
         Controller controller = loader.getController();
         controller.init(primaryStage);
-        primaryStage.setTitle("JavaFX demo");
+        primaryStage.setTitle("Tool");
         primaryStage.setScene(new Scene(root, 800, 800));
         primaryStage.show();
     }

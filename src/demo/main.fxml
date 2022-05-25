@@ -374,7 +374,10 @@
                <content>
                   <BorderPane prefHeight="200.0" prefWidth="200.0">
                      <center>
-                        <TextArea fx:id="reportArea" prefHeight="200.0" prefWidth="200.0" styleClass="text-area" BorderPane.alignment="CENTER" />
+                        <TextArea fx:id="reportArea" prefHeight="200.0" prefWidth="200.0" styleClass="text-area" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font name="System Italic" size="14.0" />
+                           </font></TextArea>
                      </center>
                   </BorderPane>
                </content>
