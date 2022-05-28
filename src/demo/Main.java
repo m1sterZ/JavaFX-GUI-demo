@@ -13,7 +13,7 @@ public class Main extends Application {
         Parent root = loader.load();
         Controller controller = loader.getController();
         controller.init(primaryStage);
-        primaryStage.setTitle("Tool");
+        primaryStage.setTitle("程序函数功能仿真系统");
         primaryStage.setScene(new Scene(root, 800, 800));
         primaryStage.show();
     }
