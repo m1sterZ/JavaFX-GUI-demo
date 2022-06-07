@@ -296,7 +296,8 @@ def test_record(i, data_recording):
     x_dis_loss = []
     for i in range(len(y_pre[1])):
         for j in range(len(y_pre)):
-            a4.append(np.sum(np.array(y[j][0]) - y_pre[j][i]))
+            # a4.append(np.sum(np.array(y[j][0]) - y_pre[j][i]))
+            a4.append(np.sum(np.array(y[j][i].detach().numpy()) - y_pre[j][i]))
         x_dis_loss.append([a4])
         a4 = []
     a4_target = []
